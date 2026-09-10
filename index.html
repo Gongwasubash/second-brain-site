@@ -333,11 +333,14 @@ function saveWriting(type,d){STORE.set('writing_'+type,d)}
 // NAVIGATION
 // ============================================================
 let currentView='dashboard';
-function show(view){
+let currentSub='';
+function show(view,sub){
 closeSidebar();
 currentView=view;
+currentSub=sub||'';
 document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));
-document.getElementById('n-'+view)?.classList.add('a');
+const navEl=document.getElementById('n-'+view);
+if(navEl)navEl.classList.add('a');
 const ct=document.getElementById('ct');
 if(view==='dashboard')renderDashboard(ct);
 else if(view==='journal')renderJournal(ct);
@@ -350,7 +353,7 @@ else if(view==='writing')renderWriting(ct);
 else if(view==='library')renderLibrary(ct);
 else if(view==='chat')renderChat(ct);
 else if(view==='graph')renderGraph(ct);
-else if(view==='wiki'){window._wikiSub=sub;renderWiki(ct,sub);}
+else if(view==='wiki')renderWiki(ct,currentSub);
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
@@ -1312,10 +1315,10 @@ ${all.length===0?'<p style="color:var(--text3)">No wiki pages found.</p>':''}
 }
 
 async function openWikiDoc(cat,name){
+const ct=document.getElementById('ct');
 ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
 const content=await ghFile(cat+'/'+name+'.md');
-const ct2=document.getElementById('ct');
-ct2.innerHTML=`
+ct.innerHTML=`
 <div class="panel" style="max-width:700px">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
 <button class="btn-ghost btn-sm" onclick="show('wiki','${cat}')"><i class="fi fi-rr-arrow-left"></i> Back</button>
