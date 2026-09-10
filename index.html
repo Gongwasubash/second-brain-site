@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Second Brain AI</title>
+<title>Life OS - Subash</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
@@ -14,7 +14,7 @@
 --border:#1e2d4a;--border2:#2a3a5c;
 --text:#e8edf5;--text2:#8899b8;--text3:#5a6a88;
 --accent:#4d7cfe;--accent2:#6b95ff;--accent3:#3a5fd4;
---green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
+--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--purple:#a78bfa;--pink:#f472b6;
 --font:'Inter',system-ui,sans-serif;
 --sidebar-w:220px;
 }
@@ -33,8 +33,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 .ni:hover{background:var(--bg3);color:var(--text)}
 .ni.a{background:var(--accent);color:#fff}
 .ni i{font-size:16px;width:20px;text-align:center}
-.ni .bdg{margin-left:auto;background:var(--bg4);padding:2px 7px;border-radius:10px;font-size:10px}
-.ni.a .bdg{background:rgba(255,255,255,.2)}
 .user-card{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
 .user-avatar{width:32px;height:32px;background:var(--accent3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
 .user-name{font-size:13px;font-weight:500}
@@ -49,16 +47,149 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 .sb-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px}
 .ct{flex:1;overflow-y:auto;display:flex;flex-direction:column}
 
-/* Welcome */
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px}
-.welcome h1{font-size:28px;font-weight:600;margin-bottom:8px;text-align:center}
-.welcome h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.welcome p{color:var(--text2);text-align:center;max-width:450px;line-height:1.6;margin-bottom:28px;font-size:14px}
-.quick-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:500px}
-.qa{padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s}
-.qa:hover{border-color:var(--accent);color:var(--accent);background:var(--bg3)}
+/* Panel */
+.panel{padding:20px;max-width:900px;margin:0 auto;width:100%}
+.panel h2{font-size:18px;font-weight:600;margin-bottom:16px}
+.panel h3{font-size:14px;font-weight:600;margin-bottom:8px}
 
-/* Messages */
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;transition:all .15s}
+.card:hover{border-color:var(--accent)}
+
+/* Grid */
+.grid{display:grid;gap:12px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:768px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* Theme callout */
+.theme-card{background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;margin-bottom:16px}
+.theme-card .label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);margin-bottom:8px}
+.theme-card .text{font-size:16px;font-weight:500;line-height:1.6;color:var(--text)}
+
+/* Memento mori */
+.memento{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.memento .big{font-size:32px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.memento .sub{font-size:11px;color:var(--text3);margin-top:4px}
+.memento .bar{height:6px;background:var(--bg4);border-radius:3px;margin-top:10px;overflow:hidden}
+.memento .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width .5s}
+
+/* Wheel chart */
+.wheel-wrap{display:flex;align-items:center;justify-content:center;padding:16px 0}
+.wheel-legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+.wheel-legend span{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:4px}
+.wheel-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* Daily questions */
+.dq-bar{display:flex;align-items:flex-end;gap:4px;height:100px;padding:8px 0}
+.dq-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.dq-col .bar{width:100%;border-radius:4px 4px 0 0;transition:height .3s;min-height:2px}
+.dq-col .lbl{font-size:9px;color:var(--text3);text-align:center;writing-mode:vertical-rl;transform:rotate(180deg);max-height:60px;overflow:hidden}
+
+/* Habits */
+.habit-grid{display:grid;gap:2px}
+.habit-cell{width:100%;aspect-ratio:1;border-radius:3px;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.habit-cell:hover{border-color:var(--accent)}
+.habit-cell.l0{background:var(--bg4)}
+.habit-cell.l1{background:rgba(77,124,254,.3)}
+.habit-cell.l2{background:rgba(77,124,254,.5)}
+.habit-cell.l3{background:rgba(77,124,254,.7)}
+.habit-cell.l4{background:var(--accent)}
+.habit-labels{display:flex;gap:2px;margin-bottom:4px}
+.habit-labels span{flex:1;font-size:9px;color:var(--text3);text-align:center}
+
+/* Journal */
+.journal-entry{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.journal-entry h3{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--accent)}
+.journal-entry .date{font-size:11px;color:var(--text3);margin-bottom:8px}
+.journal-section{margin-bottom:12px}
+.journal-section h4{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:1px}
+.journal-section textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:var(--font);padding:10px;resize:vertical;min-height:60px;outline:none}
+.journal-section textarea:focus{border-color:var(--accent)}
+
+/* Questions grid */
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.q-item{background:var(--bg3);border-radius:8px;padding:10px}
+.q-item .q-text{font-size:11px;color:var(--text2);margin-bottom:6px;line-height:1.4}
+.q-item .q-score{display:flex;gap:4px}
+.q-item .q-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--bg4);color:var(--text3);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.q-item .q-btn:hover,.q-item .q-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* Habits check */
+.h-check{display:flex;gap:8px;flex-wrap:wrap}
+.h-check label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer;padding:6px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);transition:all .15s}
+.h-check label:hover{border-color:var(--accent)}
+.h-check input:checked+span{color:var(--green)}
+.h-check input{accent-color:var(--green)}
+
+/* Tasks */
+.task-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg3);border-radius:8px;margin-bottom:6px;border:1px solid var(--border)}
+.task-item input{accent-color:var(--green)}
+.task-item.done{text-decoration:line-through;opacity:.5}
+.task-item .text{flex:1;font-size:13px}
+.task-item .date{font-size:10px;color:var(--text3)}
+.task-input{display:flex;gap:8px;margin-bottom:12px}
+.task-input input{flex:1;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none}
+.task-input input:focus{border-color:var(--accent)}
+.btn{padding:8px 16px;background:var(--accent);border:none;border-radius:8px;color:#fff;font-size:13px;cursor:pointer;font-family:var(--font);transition:background .15s}
+.btn:hover{background:var(--accent2)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--bg3)}
+
+/* Kanban */
+.kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:12px}
+.kanban-col{min-width:250px;flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px}
+.kanban-col h4{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.kanban-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;cursor:grab;font-size:13px;transition:all .15s}
+.kanban-card:hover{border-color:var(--accent)}
+.kanban-card .meta{font-size:10px;color:var(--text3);margin-top:4px}
+
+/* People */
+.person-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .15s}
+.person-card:hover{border-color:var(--accent)}
+.person-card .avatar{width:40px;height:40px;border-radius:50%;background:var(--accent3);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:8px}
+.person-card .name{font-size:14px;font-weight:500}
+.person-card .role{font-size:11px;color:var(--text3)}
+
+/* Editor */
+.editor{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.editor textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;font-family:var(--font);padding:12px;resize:vertical;min-height:200px;outline:none;line-height:1.7}
+.editor textarea:focus{border-color:var(--accent)}
+.editor-toolbar{display:flex;gap:8px;margin-bottom:8px}
+
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-head{font-size:10px;color:var(--text3);text-align:center;padding:4px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:12px;cursor:pointer;transition:all .15s;color:var(--text2)}
+.cal-day:hover{background:var(--bg3)}
+.cal-day.today{background:var(--accent);color:#fff;font-weight:600}
+.cal-day.has-entry{background:var(--bg3);color:var(--accent)}
+.cal-day.other{color:var(--text3);opacity:.4}
+
+/* Retreat */
+.retreat-section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+.retreat-section h3{font-size:14px;font-weight:600;margin-bottom:8px}
+.wheel-input{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.wheel-input label{flex:1;font-size:12px;color:var(--text2)}
+.wheel-input input[type=range]{flex:2;accent-color:var(--accent)}
+.wheel-input .val{width:30px;text-align:center;font-size:13px;font-weight:600;color:var(--accent)}
+
+/* Tab bar */
+.tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.tab{padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;color:var(--text3);transition:all .15s}
+.tab:hover{color:var(--text2);background:var(--bg3)}
+.tab.active{color:var(--accent);background:var(--bg3)}
+
+/* Quick links */
+.qlinks{display:flex;flex-wrap:wrap;gap:8px}
+.qlink{padding:8px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px}
+.qlink:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Chat */
+.chat-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.msgs{flex:1;overflow-y:auto;min-height:0}
 .msg{display:flex;gap:10px;padding:12px 16px;max-width:800px;margin:0 auto;width:100%}
 .msg.user{justify-content:flex-end}
 .msg.user .bb{background:var(--accent);color:#fff;border-radius:16px 16px 4px 16px}
@@ -67,53 +198,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 .msg .av{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
 .msg.ai .av{background:var(--accent3);color:#fff}
 .msg.user .av{background:var(--bg4);color:var(--text)}
-
-/* Typing */
-.typing{display:flex;gap:4px;padding:6px 10px}
-.typing span{width:5px;height:5px;background:var(--text3);border-radius:50%;animation:bounce 1.4s infinite ease-in-out}
-.typing span:nth-child(2){animation-delay:.2s}
-.typing span:nth-child(3){animation-delay:.4s}
-@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
-
-/* Input */
-.chat-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
-.msgs{flex:1;overflow-y:auto;min-height:0}
 .input-area{padding:12px 16px 20px;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
 .input-wrap{max-width:800px;margin:0 auto;display:flex;gap:8px;align-items:flex-end}
 .input-wrap textarea{flex:1;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:var(--font);outline:none;resize:none;min-height:42px;max-height:120px;line-height:1.5;transition:border-color .15s}
 .input-wrap textarea:focus{border-color:var(--accent)}
 .send-btn{width:42px;height:42px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
 .send-btn:hover{background:var(--accent2)}
-.send-btn:disabled{opacity:.4;cursor:not-allowed}
-.tools{display:flex;gap:6px;margin-top:6px}
-.tool-btn{padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:5px;font-size:10px;color:var(--text3);cursor:pointer;transition:all .15s}
-.tool-btn:hover{border-color:var(--accent);color:var(--accent)}
-
-/* Dashboard */
-.panel{padding:20px;max-width:800px;margin:0 auto;width:100%}
-.panel h2{font-size:18px;font-weight:600;margin-bottom:16px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
-.stat{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
-.stat .num{font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stat .label{font-size:10px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
-.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .15s}
-.card:hover{border-color:var(--accent);transform:translateY(-1px)}
-.card h3{font-size:13px;font-weight:500;margin-bottom:4px}
-.card p{font-size:11px;color:var(--text2);line-height:1.5}
-.card .meta{margin-top:8px;font-size:10px;color:var(--text3)}
-
-/* Graph */
-.graph-wrap{flex:1;display:flex;flex-direction:column;min-height:0;padding:16px;max-width:1000px;margin:0 auto;width:100%}
-.graph-bar{display:flex;gap:12px;align-items:center;margin-bottom:10px;font-size:12px;color:var(--text2);flex-wrap:wrap}
-.lgnd{display:flex;gap:10px;flex-wrap:wrap}
-.lgnd span{display:flex;align-items:center;gap:4px}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-#gc{flex:1;min-height:420px;background:radial-gradient(ellipse at center,#14141c 0%,#0a0a0f 75%);border:1px solid var(--border);border-radius:10px;cursor:grab;touch-action:none}
-@media(max-width:768px){#gc{min-height:320px}.graph-wrap{padding:10px}}
-#ginfo{margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:12px;display:none}
-#ginfo.on{display:block}
-#ginfo .go{color:var(--accent);cursor:pointer;font-weight:600}
+.typing{display:flex;gap:4px;padding:6px 10px}
+.typing span{width:5px;height:5px;background:var(--text3);border-radius:50%;animation:bounce 1.4s infinite ease-in-out}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 
 /* Mobile */
 .menu-btn{display:none;position:fixed;top:10px;left:10px;z-index:101;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);cursor:pointer;font-size:16px}
@@ -123,9 +219,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 .sb.open{transform:translateX(0)}
 .overlay.show{display:block}
 .menu-btn{display:flex!important}
-.stats{grid-template-columns:repeat(2,1fr)}
-.pg{grid-template-columns:1fr}
-.welcome h1{font-size:22px}
+.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -136,29 +230,31 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 <aside class="sb" id="sidebar">
 <div class="sb-h">
 <div class="logo">
-<div class="logo-icon"><i class="fi fi-rr-brain" style="color:#fff;font-size:16px"></i></div>
-<span>Second Brain</span>
+<div class="logo-icon"><i class="fi fi-rr-compass" style="color:#fff;font-size:16px"></i></div>
+<span>Life OS</span>
 </div>
 </div>
 <nav class="nav">
-<div class="nav-label">Workspace</div>
-<div class="ni a" id="n-chat" onclick="show('chat')"><i class="fi fi-rr-comment"></i> AI Chat</div>
-<div class="ni" onclick="location.href='terminal.html'"><i class="fi fi-rr-terminal"></i> Terminal</div>
-<div class="ni" id="n-home" onclick="show('home')"><i class="fi fi-rr-dashboard"></i> Dashboard</div>
-<div class="nav-label">Knowledge</div>
-<div class="ni" onclick="show('wiki')"><i class="fi fi-rr-book-open-reader"></i> Wiki <span class="bdg" id="wc">-</span></div>
-<div class="ni" onclick="show('wiki','sources')"><i class="fi fi-rr-document"></i> Sources</div>
-<div class="ni" id="n-raw" onclick="show('raw')"><i class="fi fi-rr-archive"></i> Raw</div>
-<div class="ni" onclick="show('wiki','entities')"><i class="fi fi-rr-user"></i> Entities</div>
-<div class="ni" onclick="show('wiki','concepts')"><i class="fi fi-rr-bulb"></i> Concepts</div>
+<div class="nav-label">Dashboard</div>
+<div class="ni a" id="n-dashboard" onclick="show('dashboard')"><i class="fi fi-rr-dashboard"></i> Compass</div>
+<div class="ni" id="n-journal" onclick="show('journal')"><i class="fi fi-rr-notebook"></i> Journal</div>
+<div class="ni" id="n-retreat" onclick="show('retreat')"><i class="fi fi-rr-mountain"></i> Retreat</div>
+<div class="nav-label">Plan</div>
+<div class="ni" id="n-planning" onclick="show('planning')"><i class="fi fi-rr-bullseye"></i> Planning</div>
+<div class="ni" id="n-projects" onclick="show('projects')"><i class="fi fi-rr-kanban"></i> Projects</div>
+<div class="ni" id="n-tasks" onclick="show('tasks')"><i class="fi fi-rr-checkbox"></i> Tasks</div>
+<div class="nav-label">People & Content</div>
+<div class="ni" id="n-people" onclick="show('people')"><i class="fi fi-rr-users"></i> People</div>
+<div class="ni" id="n-writing" onclick="show('writing')"><i class="fi fi-rr-pen"></i> Writing</div>
+<div class="ni" id="n-library" onclick="show('library')"><i class="fi fi-rr-book-open"></i> Library</div>
+<div class="nav-label">Tools</div>
+<div class="ni" id="n-chat" onclick="show('chat')"><i class="fi fi-rr-comment"></i> AI Chat</div>
 <div class="ni" id="n-graph" onclick="show('graph')"><i class="fi fi-rr-diagram-project"></i> Graph</div>
-<div class="nav-label">Personal</div>
-<div class="ni" onclick="show('crm')"><i class="fi fi-rr-users"></i> Contacts</div>
-<div class="ni" onclick="show('journal')"><i class="fi fi-rr-notebook"></i> Journal</div>
+<div class="ni" onclick="location.href='terminal.html'"><i class="fi fi-rr-terminal"></i> Terminal</div>
 </nav>
 <div class="user-card">
 <div class="user-avatar"><i class="fi fi-rr-user" style="font-size:14px"></i></div>
-<div><div class="user-name">Subash</div><div class="user-plan">Free Plan</div></div>
+<div><div class="user-name">Subash</div><div class="user-plan">Life OS</div></div>
 </div>
 </aside>
 <main class="mn">
@@ -168,163 +264,841 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 <div class="ct" id="ct"></div>
 </main>
 </div>
-<script>
-const GH='Gongwasubash/ai',API='https://api.github.com/repos/'+GH+'/contents',RAW='https://raw.githubusercontent.com/'+GH+'/main';
-let cache={},chatHist=[],busy=false;
-const ct=document.getElementById('ct');
 
+<script>
+// ============================================================
+// DATA LAYER
+// ============================================================
+const STORE={
+get(k,d){try{const v=localStorage.getItem('los_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+set(k,v){try{localStorage.setItem('los_'+k,JSON.stringify(v))}catch(e){}},
+};
+const CFG=STORE.get('config',{
+questions:[
+{k:'dq_goals',text:'Did I do my best to set clear goals today?'},
+{k:'dq_progress',text:'Did I do my best to make progress toward my goals?'},
+{k:'dq_meaning',text:'Did I do my best to find meaning?'},
+{k:'dq_happy',text:'Did I do my best to be happy?'},
+{k:'dq_relationships',text:'Did I do my best to build positive relationships?'},
+{k:'dq_engaged',text:'Did I do my best to be fully engaged?'},
+{k:'dq_create',text:'Did I do my best to create something?'},
+{k:'dq_learn',text:'Did I do my best to learn something?'}
+],
+habits:['journal','exercise','reading','meditation','code'],
+wheel:['health','relationships','family','career','finances','growth','fun','meaning'],
+theme:'Build AI-powered systems that create freedom, share knowledge through content, and help others build their second brains.',
+values:['Build in public','Systems over willpower','Compound knowledge','Freedom','Help others'],
+roles:['Creator','Developer','Friend','Family member','Learner','Community member'],
+birthdate:'2000-01-01',
+lifeExpectancy:80
+});
+function saveCfg(){STORE.set('config',CFG)}
+function today(){return new Date().toISOString().slice(0,10)}
+function weekKey(d){const dt=new Date(d);constjan7=new Date(dt.getFullYear(),0,7);const day=dt.getDay()||7;dt.setDate(dt.getDate()+4-day);const weekNum=Math.ceil(((dt-new Date(dt.getFullYear(),0,7))/864e5+1)/7);return dt.getFullYear()+'-W'+String(weekNum).padStart(2,'0')}
+function quarterKey(d){return d.slice(0,4)+'-Q'+Math.ceil((parseInt(d.slice(5,7)))/3)}
+function dayOfWeek(d){return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(d).getDay()]}
+
+// ============================================================
+// JOURNAL DATA
+// ============================================================
+function getJournal(date){return STORE.get('journal_'+date,{date,questions:{},habits:{},wins:'',gratitude:'',journal:'',entries:[]})}
+function saveJournal(date,data){STORE.set('journal_'+date,data)}
+function getRetreat(qk){return STORE.get('retreat_'+qk,{quarter:qk,wheel:{},retrospective:{wentWell:'',didNotGoWell:'',learned:''},intentions:['','',''],focus:'',focusWhy:''})}
+function saveRetreat(qk,data){STORE.set('retreat_'+qk,data)}
+function getTasks(){return STORE.get('tasks',[])}
+function saveTasks(t){STORE.set('tasks',t)}
+function getProjects(){return STORE.get('projects',[])}
+function saveProjects(p){STORE.set('projects',p)}
+function getPeople(){return STORE.get('people',[])}
+function savePeople(p){STORE.set('people',p)}
+function getWriting(type){return STORE.get('writing_'+type,[])}
+function saveWriting(type,d){STORE.set('writing_'+type,d)}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+let currentView='dashboard';
+function show(view){
+closeSidebar();
+currentView=view;
+document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));
+document.getElementById('n-'+view)?.classList.add('a');
+const ct=document.getElementById('ct');
+if(view==='dashboard')renderDashboard(ct);
+else if(view==='journal')renderJournal(ct);
+else if(view==='retreat')renderRetreat(ct);
+else if(view==='planning')renderPlanning(ct);
+else if(view==='projects')renderProjects(ct);
+else if(view==='tasks')renderTasks(ct);
+else if(view==='people')renderPeople(ct);
+else if(view==='writing')renderWriting(ct);
+else if(view==='library')renderLibrary(ct);
+else if(view==='chat')renderChat(ct);
+else if(view==='graph')renderGraph(ct);
+}
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
 
-async function gh(p){if(cache[p])return cache[p];try{const r=await fetch(API+'/'+p,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)throw 0;const d=await r.json();if(Array.isArray(d)){cache[p]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));}else{cache[p]=decodeURIComponent(escape(atob(d.content)));}return cache[p];}catch(e){return Array.isArray(p)||!p.includes('/')?[]:'';}}
-async function rf(p){const k='f:'+p;if(cache[k])return cache[k];try{const u=RAW+'/'+p.split('/').map(encodeURIComponent).join('/');const r=await fetch(u);if(r.ok){cache[k]=await r.text();return cache[k];}}catch(e){}return '';}
-async function lf(f){const k='l:'+f;if(cache[k])return cache[k];const d=await gh(f);if(d&&Array.isArray(d)){cache[k]=d;return d;}return [];}
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard(ct){
+const t=today();
+const j=getJournal(t);
+const qk=quarterKey(t);
+const retreat=getRetreat(qk);
 
-function show(v,s){closeSidebar();document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));document.getElementById('n-'+v)?.classList.add('a');ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
-if(v==='home')renderHome();else if(v==='wiki')renderWiki(s);else if(v==='crm')renderCRM();else if(v==='journal')renderJournal();else if(v==='graph')renderGraph();else if(v==='raw')renderRaw();else renderChat();}
+// Memento mori
+const bd=new Date(CFG.birthdate);
+const now=new Date();
+const daysLived=Math.floor((now-bd)/(1000*60*60*24));
+const daysTotal=CFG.lifeExpectancy*365;
+const daysRemaining=daysTotal-daysLived;
+const pct=Math.min(100,(daysLived/daysTotal*100));
 
-async function renderHome(){const[s,e,c]=await Promise.all([lf('wiki/sources'),lf('wiki/entities'),lf('wiki/concepts')]);const t=(s?.length||0)+(e?.length||0)+(c?.length||0);
-ct.innerHTML=`<div class="panel"><h2>Dashboard</h2><div class="stats">
-<div class="stat"><div class="num">${t}</div><div class="label">Wiki Pages</div></div>
-<div class="stat"><div class="num">${s?.length||0}</div><div class="label">Sources</div></div>
-<div class="stat"><div class="num">${e?.length||0}</div><div class="label">Entities</div></div>
-<div class="stat"><div class="num">${c?.length||0}</div><div class="label">Concepts</div></div>
-</div><h3>Recent Sources</h3><div class="pg">${(s||[]).slice(0,6).map(f=>`<div class="card" onclick="openDoc('wiki/sources','${f.name}')"><h3>${f.name.replace(/-/g,' ')}</h3><div class="meta"><i class="fi fi-rr-document" style="margin-right:4px"></i>source</div></div>`).join('')}</div></div>`;}
-
-async function renderWiki(sub){const fs=sub?[sub]:['sources','entities','concepts','analyses'];const all=[];
-for(const f of fs){const files=await lf('wiki/'+f);(files||[]).forEach(file=>{file.cat=f;all.push(file);});}
-ct.innerHTML=`<div class="panel"><h2>${sub?sub[0].toUpperCase()+sub.slice(1):'All Wiki Pages'}</h2><div class="pg">${all.map(f=>`<div class="card" onclick="openDoc('wiki/${f.cat}','${f.name}')"><h3>${f.name.replace(/[-_]/g,' ')}</h3><div class="meta">${f.cat}</div></div>`).join('')||'<p style="color:var(--text3)">No pages found.</p>'}</div></div>`;}
-
-function fmtSize(b){if(b>1048576)return (b/1048576).toFixed(1)+' MB';return Math.max(1,Math.round(b/1024))+' KB';}
-async function renderRaw(){
-ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)">loading raw files…</div>';
-const all=[];let limited=false;
-for(const f of['raw','raw/processed']){
-try{const r=await fetch(API+'/'+f,{headers:{'Accept':'application/vnd.github.v3+json'}});
-if(r.status===403){limited=true;continue;}
-const d=await r.json();(d||[]).forEach(x=>{if(x.type==='file'&&x.name.endsWith('.md')){x.cat=f;all.push(x);}});}catch(e){}
+// Habit streak
+const habits=CFG.habits;
+let streak=0;
+for(let i=0;i<30;i++){
+const d=new Date();d.setDate(d.getDate()-i);
+const dj=getJournal(d.toISOString().slice(0,10));
+const allDone=habits.every(h=>dj.habits[h]);
+if(allDone)streak++;else if(i>0)break;
 }
-all.sort((a,b)=>(b.size||0)-(a.size||0));
-ct.innerHTML=`<div class="panel"><h2>Raw Sources</h2><p style="color:var(--text3);font-size:12px;margin-bottom:12px">Original immutable source documents from GitHub (${all.length} files). Large takeout videos stay out of git by design.${limited?'<br>GitHub rate limit hit (60/hr) — some folders hidden. Wait a minute and reopen.':''}</p><div class="pg">${all.map(x=>`<div class="card" onclick="openRaw('${x.cat}','${x.name.replace(/'/g,"\\'")}')"><h3>${esc(x.name.replace(/\.md$/,''))}</h3><div class="meta">${esc(x.cat)} · ${fmtSize(x.size||0)}</div></div>`).join('')||'<p style="color:var(--text3)">No raw files found.</p>'}</div></div>`;}
-async function openRaw(cat,name){ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)">loading…</div>';
-const c=await rf(cat+'/'+name);const MAX=30000;
-ct.innerHTML=`<div class="panel" style="max-width:700px"><a style="color:var(--accent);font-size:12px;cursor:pointer" onclick="show('raw')"><i class="fi fi-rr-arrow-left" style="margin-right:4px"></i>Back</a><h2 style="font-size:16px;margin:12px 0 4px">${esc(name.replace(/\.md$/,''))}</h2><div style="color:var(--text3);font-size:11px;margin-bottom:8px">${esc(cat)}${c.length>MAX?' · showing first 30KB':''}</div><div style="margin-top:8px;line-height:1.8;font-size:13px;white-space:pre-wrap">${esc(c.slice(0,MAX))}</div></div>`;}
 
-function goback(c){const p=c.split('/');if(p[0]==='wiki')show('wiki',p[1]);else show(p[0]);}
+// Recent questions avg
+let recentAvg=0;
+let recentCount=0;
+for(let i=0;i<7;i++){
+const d=new Date();d.setDate(d.getDate()-i);
+const dj=getJournal(d.toISOString().slice(0,10));
+Object.values(dj.questions).forEach(v=>{if(v>0){recentAvg+=v;recentCount++}});
+}
+recentAvg=recentCount?Math.round(recentAvg/recentCount*10)/10:0;
 
-async function openDoc(cat,name){ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';const c=await rf(cat+'/'+name+'.md');
-ct.innerHTML=`<div class="panel" style="max-width:700px"><a style="color:var(--accent);font-size:12px;cursor:pointer" onclick="goback('${cat}')"><i class="fi fi-rr-arrow-left" style="margin-right:4px"></i>Back</a><div style="margin-top:12px;line-height:1.8;font-size:13px;white-space:pre-wrap">${c}</div></div>`;}
+ct.innerHTML=`
+<div class="panel">
+<div class="theme-card">
+<div class="label">Life Theme</div>
+<div class="text">${esc(CFG.theme)}</div>
+</div>
 
-async function renderCRM(){const f=await lf('crm');const e=(f||[]).filter(x=>x.name!=='index');
-ct.innerHTML=`<div class="panel"><h2>Contacts</h2><div class="pg">${e.map(x=>`<div class="card" onclick="openDoc('crm','${x.name}')"><h3>${x.name.replace(/[-_]/g,' ')}</h3></div>`).join('')||'<p style="color:var(--text3)">No contacts yet.</p>'}</div></div>`;}
+<div class="grid grid-3" style="margin-bottom:16px">
+<div class="memento">
+<div class="big">${daysLived.toLocaleString()}</div>
+<div class="sub">days lived</div>
+<div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div>
+<div class="sub" style="margin-top:6px">${daysRemaining.toLocaleString()} days remaining</div>
+</div>
+<div class="memento">
+<div class="big">${recentAvg}</div>
+<div class="sub">avg question score (7d)</div>
+</div>
+<div class="memento">
+<div class="big">${streak}</div>
+<div class="sub">day habit streak</div>
+</div>
+</div>
 
-async function renderJournal(){const f=await lf('journal');const e=(f||[]).filter(x=>x.name!=='index');
-ct.innerHTML=`<div class="panel"><h2>Journal</h2><div class="pg">${e.map(x=>`<div class="card" onclick="openDoc('journal','${x.name}')"><h3>${x.name.replace(/[-_]/g,' ')}</h3></div>`).join('')||'<p style="color:var(--text3)">No entries yet.</p>'}</div></div>`;}
+<div class="grid grid-2" style="margin-bottom:16px">
+<div class="card">
+<h3>Wheel of Life</h3>
+<div class="wheel-wrap"><canvas id="wc" width="260" height="260"></canvas></div>
+</div>
+<div class="card">
+<h3>Daily Questions (7 day trend)</h3>
+<div id="dq-chart"></div>
+</div>
+</div>
 
-const GCOL={'wiki/sources':'#4d7cfe','wiki/entities':'#22c55e','wiki/concepts':'#f59e0b','wiki/analyses':'#a78bfa','crm':'#f472b6','journal':'#4ec9b0'};
-function renderGraph(){
-ct.innerHTML=`<div class="graph-wrap"><h2 style="font-size:18px;font-weight:600;margin-bottom:8px">Graph <span style="font-size:11px;color:var(--text3);font-weight:400">v3 · obsidian</span></h2>
-<div class="graph-bar"><span id="gcount" style="color:var(--text3)">loading files…</span><span class="lgnd">${Object.entries(GCOL).map(([k,v])=>`<span><span class="dot" style="background:${v}"></span>${k.split('/').pop()}</span>`).join('')}</span></div>
-<canvas id="gc"></canvas><div id="ginfo"></div></div>`;
-buildGraph();}
-async function buildGraph(){
-const cv=document.getElementById('gc');if(!cv)return;
-const folders=Object.keys(GCOL),nodes=[],byNorm={};
-function norm(s){return (s||'').toLowerCase().replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();}
-for(const f of folders){const files=await lf(f);if(!cv.isConnected)return;
-for(const file of(files||[])){const n={id:file.path,name:file.name,folder:f,x:0,y:0,vx:0,vy:0,links:[]};nodes.push(n);const k=norm(file.name);(byNorm[k]=byNorm[k]||[]).push(n);}}
-const gc=document.getElementById('gcount');if(gc)gc.textContent=nodes.length+' files · linking…';
-const edges=[];
-for(const n of nodes){const c=await rf(n.path);if(!cv.isConnected)return;if(!c)continue;const seen={};
-for(const m of c.matchAll(/\[\[([^\]|#]+)/g)){const t=m[1].trim();if(!t||seen[t])continue;seen[t]=1;
-const tgt=(byNorm[norm(t)]||[]).find(x=>x.folder===n.folder)||(byNorm[norm(t)]||[])[0];
-if(tgt&&tgt!==n){edges.push([n,tgt]);n.links.push(tgt);tgt.links.push(n);}}}
-if(gc)gc.textContent=nodes.length+' files · '+edges.length+' links — scroll to zoom · drag background to pan · drag dots to move · click a dot to open';
-nodes.forEach((n,i)=>{const fi=folders.indexOf(n.folder),a=(fi/folders.length)*Math.PI*2+i*0.35;
-n.x=Math.cos(a)*200*(0.4+0.6*((i%5)/4))+(Math.random()-0.5)*60;n.y=Math.sin(a)*150+(Math.random()-0.5)*60;});
-runGraph(cv,nodes,edges);}
-function runGraph(cv,nodes,edges){
+<div class="grid grid-2" style="margin-bottom:16px">
+<div class="card">
+<h3>Habit Canvas (30 days)</h3>
+<div id="habit-canvas"></div>
+</div>
+<div class="card">
+<h3>Quick Actions</h3>
+<div class="qlinks" style="margin-top:8px">
+<div class="qlink" onclick="show('journal')"><i class="fi fi-rr-plus" style="font-size:12px"></i> New Journal Entry</div>
+<div class="qlink" onclick="show('tasks')"><i class="fi fi-rr-checkbox" style="font-size:12px"></i> Add Task</div>
+<div class="qlink" onclick="show('retreat')"><i class="fi fi-rr-mountain" style="font-size:12px"></i> Quarterly Retreat</div>
+<div class="qlink" onclick="show('planning')"><i class="fi fi-rr-bullseye" style="font-size:12px"></i> Review Values</div>
+<div class="qlink" onclick="show('projects')"><i class="fi fi-rr-kanban" style="font-size:12px"></i> Projects Board</div>
+<div class="qlink" onclick="show('writing')"><i class="fi fi-rr-pen" style="font-size:12px"></i> Start Writing</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>Today's Journal</h3>
+${renderJournalInline(t,j)}
+</div>
+</div>`;
+
+// Draw wheel
+drawWheel('wc',retreat.wheel,CFG.wheel);
+// Draw question chart
+drawQuestionChart('dq-chart',7);
+// Draw habit canvas
+drawHabitCanvas('habit-canvas',30);
+}
+
+function drawWheel(id,data,labels){
+const cv=document.getElementById(id);if(!cv)return;
 const ctx=cv.getContext('2d');
-let drag=null,hover=null,sel=null,moved=0,panning=false;
-const view={x:0,y:0,k:1};
-function size(){const d=window.devicePixelRatio||1;cv.width=cv.clientWidth*d;cv.height=(cv.clientHeight||480)*d;ctx.setTransform(d,0,0,d,0,0);}
-size();window.addEventListener('resize',size);
-function pos(e){const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];}
-function rad(n){return 3+Math.min(9,n.links.length);}
-function toWorld(x,y){const w=cv.clientWidth,h=cv.clientHeight||480;return[(x-w/2)/view.k+view.x,(y-h/2)/view.k+view.y];}
-function near(x,y){const p=toWorld(x,y);let best=null,bd=1e9;for(const n of nodes){const dx=n.x-p[0],dy=n.y-p[1],d=Math.sqrt(dx*dx+dy*dy);if(d<rad(n)/view.k+8&&d<bd){bd=d;best=n;}}return best;}
-function down(x,y){const n=near(x,y);moved=0;if(n){drag=n;panning=false;cv.style.cursor='grabbing';}else{panning=true;drag=null;cv.style.cursor='move';}dragX=x;dragY=y;}
-let dragX=0,dragY=0;
-function move(x,y){if(drag){const p=toWorld(x,y);drag.x=p[0];drag.y=p[1];drag.vx=drag.vy=0;moved++;}
-else if(panning){view.x-=(x-dragX)/view.k;view.y-=(y-dragY)/view.k;dragX=x;dragY=y;moved++;}
-else{hover=near(x,y);cv.style.cursor=hover?'pointer':'grab';}}
-function up(){if(drag&&moved<4)select(drag);drag=null;panning=false;cv.style.cursor='grab';}
-cv.onmousedown=e=>{const p=pos(e);down(p[0],p[1]);};
-cv.onmousemove=e=>{const p=pos(e);move(p[0],p[1]);};
-cv.onmouseup=()=>up();cv.onmouseleave=()=>{drag=null;panning=false;hover=null;};
-cv.ontouchstart=e=>{const t=e.touches[0],p=pos(t);down(p[0],p[1]);e.preventDefault();};
-cv.ontouchmove=e=>{const t=e.touches[0],p=pos(t);move(p[0],p[1]);e.preventDefault();};
-cv.ontouchend=()=>up();
-cv.onwheel=e=>{e.preventDefault();const p=pos(e),before=toWorld(p[0],p[1]);
-view.k=Math.min(3,Math.max(0.3,view.k*(e.deltaY<0?1.12:0.89)));
-const w=cv.clientWidth,h=cv.clientHeight||480;
-view.x=before[0]-(p[0]-w/2)/view.k;view.y=before[1]-(p[1]-h/2)/view.k;};
-cv.ondblclick=()=>{view.x=view.y=0;view.k=1;};
-function select(n){sel=n;window._gsel=n;const gi=document.getElementById('ginfo');if(!gi)return;gi.classList.add('on');
-const linked=n.links.slice(0,15).map(t=>{const i=nodes.indexOf(t);return `<span class="go" style="margin-right:8px" onclick="gjump(${i})">◦ ${esc(t.name)}</span>`;}).join('');
-gi.innerHTML=`<div style="font-weight:600;font-size:13px">${esc(n.name)}</div><div style="color:var(--text3);margin:2px 0 6px">${esc(n.folder)} · ${n.links.length} links</div><span class="go" onclick="openDoc(window._gsel.folder,window._gsel.name)">Open file →</span>${linked?`<div style="margin-top:8px;color:var(--text3)">Connected to:<br>${linked}</div>`:''}`;}
-window._gnodes=nodes;
-window.gjump=function(i){const n=(window._gnodes||[])[i];if(!n)return;view.x=n.x;view.y=n.y;if(view.k<1)view.k=1;select(n);};
-function tick(){
-if(!cv.isConnected)return;
-const w=cv.clientWidth,h=cv.clientHeight||480;
-for(let i=0;i<nodes.length;i++){const a=nodes[i];
-for(let j=i+1;j<nodes.length;j++){const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y;const d2=dx*dx+dy*dy||1,d=Math.sqrt(d2),f=Math.min(9000/d2,2);dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;}
-a.vx+=(0-a.x)*0.008;a.vy+=(0-a.y)*0.008;a.vx*=0.85;a.vy*=0.85;}
-for(const e of edges){const a=e[0],b=e[1],dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-110)*0.02,ux=dx/d,uy=dy/d;a.vx+=ux*f;a.vy+=uy*f;b.vx-=ux*f;b.vy-=uy*f;}
-for(const n of nodes){if(n!==drag){n.x+=n.vx;n.y+=n.vy;}}
-const sx=n=>(n.x-view.x)*view.k+w/2, sy=n=>(n.y-view.y)*view.k+h/2;
-ctx.clearRect(0,0,w,h);
-ctx.lineWidth=1;
-const conn=sel?new Set([sel,...sel.links]):null;
-for(const e of edges){const hot=e[0]===sel||e[1]===sel||e[0]===hover||e[1]===hover;
-ctx.strokeStyle=hot?'rgba(168,130,255,.95)':(sel?'rgba(148,163,255,.07)':'rgba(148,163,255,.34)');
-ctx.lineWidth=hot?1.8:1.2;
-ctx.beginPath();ctx.moveTo(sx(e[0]),sy(e[0]));ctx.lineTo(sx(e[1]),sy(e[1]));ctx.stroke();}
-for(const n of nodes){const x=sx(n),y=sy(n),r=rad(n)*view.k,hot=n===sel||n===hover,col=GCOL[n.folder]||'#a882ff';
-const dimmed=conn&&!conn.has(n)&&!hot;
-ctx.save();ctx.shadowColor=col;ctx.shadowBlur=dimmed?0:(hot?24:10+Math.min(14,n.links.length*2));ctx.fillStyle=col;ctx.globalAlpha=dimmed?.15:(hot?1:.95);
-ctx.beginPath();ctx.arc(x,y,Math.max(2,r),0,7);ctx.fill();ctx.restore();
-if(n===sel){ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,Math.max(2,r)+3,0,7);ctx.stroke();}
-const isNb=sel&&sel.links.includes(n);
-if(hot||n===sel||isNb){ctx.fillStyle=hot||n===sel?'#fff':'#9aa0b4';ctx.font='10px Inter,system-ui,sans-serif';ctx.fillText(n.name,x+r+5,y+3.5);}}
-requestAnimationFrame(tick);}
-requestAnimationFrame(tick);}
+const cx=130,cy=130,r=100;
+const n=labels.length;
+ctx.clearRect(0,0,260,260);
 
-function renderChat(){ct.innerHTML=`
+// Draw rings
+for(let ring=1;ring<=5;ring++){
+ctx.beginPath();
+const rr=r*ring/5;
+for(let i=0;i<=n;i++){
+const a=(i/n)*Math.PI*2-Math.PI/2;
+const x=cx+Math.cos(a)*rr;
+const y=cy+Math.sin(a)*rr;
+i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+}
+ctx.strokeStyle='rgba(255,255,255,.08)';
+ctx.lineWidth=1;
+ctx.stroke();
+}
+
+// Draw axes
+for(let i=0;i<n;i++){
+const a=(i/n)*Math.PI*2-Math.PI/2;
+ctx.beginPath();
+ctx.moveTo(cx,cy);
+ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);
+ctx.strokeStyle='rgba(255,255,255,.06)';
+ctx.stroke();
+}
+
+// Draw data
+const vals=labels.map(l=>data[l]||0);
+if(vals.some(v=>v>0)){
+ctx.beginPath();
+for(let i=0;i<=n;i++){
+const idx=i%n;
+const a=(idx/n)*Math.PI*2-Math.PI/2;
+const v=vals[idx]/10*r;
+const x=cx+Math.cos(a)*v;
+const y=cy+Math.sin(a)*v;
+i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+}
+ctx.fillStyle='rgba(77,124,254,.2)';
+ctx.fill();
+ctx.strokeStyle='rgba(77,124,254,.8)';
+ctx.lineWidth=2;
+ctx.stroke();
+
+// Draw dots
+for(let i=0;i<n;i++){
+const a=(i/n)*Math.PI*2-Math.PI/2;
+const v=vals[i]/10*r;
+ctx.beginPath();
+ctx.arc(cx+Math.cos(a)*v,cy+Math.sin(a)*v,4,0,Math.PI*2);
+ctx.fillStyle='#4d7cfe';
+ctx.fill();
+ctx.strokeStyle='#fff';
+ctx.lineWidth=1.5;
+ctx.stroke();
+}
+}
+
+// Draw labels
+ctx.font='10px Inter,system-ui,sans-serif';
+ctx.fillStyle='#8899b8';
+ctx.textAlign='center';
+for(let i=0;i<n;i++){
+const a=(i/n)*Math.PI*2-Math.PI/2;
+const x=cx+Math.cos(a)*(r+18);
+const y=cy+Math.sin(a)*(r+18)+3;
+ctx.fillText(labels[i],x,y);
+}
+}
+
+function drawQuestionChart(id,days){
+const el=document.getElementById(id);if(!el)return;
+const colors=['#4d7cfe','#6b95ff','#3a5fd4','#a78bfa','#22c55e','#f59e0b','#f472b6','#ef4444'];
+let html='<div class="dq-bar">';
+for(let i=days-1;i>=0;i--){
+const d=new Date();d.setDate(d.getDate()-i);
+const dj=getJournal(d.toISOString().slice(0,10));
+const vals=Object.values(dj.questions).filter(v=>v>0);
+const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+const h=Math.max(2,avg*10);
+html+=`<div class="dq-col"><div style="font-size:9px;color:var(--text3)">${avg?avg.toFixed(1):'-'}</div><div class="bar" style="height:${h}px;background:${colors[i%colors.length]}"></div><div style="font-size:9px;color:var(--text3)">${dayOfWeek(d.toISOString().slice(0,10))}</div></div>`;
+}
+html+='</div>';
+el.innerHTML=html;
+}
+
+function drawHabitCanvas(id,days){
+const el=document.getElementById(id);if(!el)return;
+const habits=CFG.habits;
+const colors=['#4d7cfe','#22c55e','#f59e0b','#a78bfa','#f472b6'];
+let html=`<div class="habit-labels">`;
+for(let i=days-1;i>=0;i-=5){
+const d=new Date();d.setDate(d.getDate()-i);
+html+=`<span style="flex:${5}">${d.toISOString().slice(5,10)}</span>`;
+}
+html+=`</div>`;
+for(let hi=0;hi<habits.length;hi++){
+html+=`<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px"><span style="font-size:10px;color:var(--text3);width:70px;text-align:right">${habits[hi]}</span><div style="display:flex;gap:2px;flex:1">`;
+for(let i=days-1;i>=0;i--){
+const d=new Date();d.setDate(d.getDate()-i);
+const dj=getJournal(d.toISOString().slice(0,10));
+const done=dj.habits[habits[hi]]?1:0;
+html+=`<div class="habit-cell ${done?'l4':'l0'}" style="flex:1" onclick="toggleHabit('${d.toISOString().slice(0,10)}','${habits[hi]}')" title="${d.toISOString().slice(0,10)}"></div>`;
+}
+html+=`</div></div>`;
+}
+el.innerHTML=html;
+}
+
+function toggleHabit(date,habit){
+const j=getJournal(date);
+j.habits[habit]=!j.habits[habit];
+saveJournal(date,j);
+show('dashboard');
+}
+
+// ============================================================
+// JOURNAL
+// ============================================================
+let journalDate=today();
+function renderJournal(ct){
+const d=new Date();
+const year=d.getFullYear();
+const month=d.getMonth();
+const firstDay=new Date(year,month,1).getDay();
+const daysInMonth=new Date(year,month+1,0).getDate();
+const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+let calHtml=`<div class="cal-head">S</div><div class="cal-head">M</div><div class="cal-head">T</div><div class="cal-head">W</div><div class="cal-head">T</div><div class="cal-head">F</div><div class="cal-head">S</div>`;
+for(let i=0;i<firstDay;i++)calHtml+=`<div class="cal-day other"></div>`;
+for(let day=1;day<=daysInMonth;day++){
+const ds=year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+const isToday=ds===today();
+const j=getJournal(ds);
+const hasEntry=j.journal||j.wins||j.gratitude;
+calHtml+=`<div class="cal-day ${isToday?'today':''} ${hasEntry?'has-entry':''}" onclick="openJournalDay('${ds}')">${day}</div>`;
+}
+
+const j=getJournal(journalDate);
+
+ct.innerHTML=`
+<div class="panel">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+<button class="btn-ghost btn-sm" onclick="journalNav(-1)"><i class="fi fi-rr-arrow-left"></i></button>
+<h2 style="margin:0">${months[month]} ${year}</h2>
+<button class="btn-ghost btn-sm" onclick="journalNav(1)"><i class="fi fi-rr-arrow-right"></i></button>
+</div>
+<div class="grid grid-2">
+<div class="card">
+<div class="cal-grid">${calHtml}</div>
+</div>
+<div>
+<div class="journal-entry">
+<div class="date">${journalDate} · ${dayOfWeek(journalDate)}</div>
+<div class="journal-section">
+<h4>Daily Questions (1-10 effort)</h4>
+<div class="q-grid">
+${CFG.questions.map(q=>`
+<div class="q-item">
+<div class="q-text">${esc(q.text)}</div>
+<div class="q-score">
+${[1,2,3,4,5,6,7,8,9,10].map(v=>`<div class="q-btn ${j.questions[q.k]===v?'active':''}" onclick="setQ('${journalDate}','${q.k}',${v})">${v}</div>`).join('')}
+</div>
+</div>
+`).join('')}
+</div>
+</div>
+<div class="journal-section">
+<h4>Habits</h4>
+<div class="h-check">
+${CFG.habits.map(h=>`<label><input type="checkbox" ${j.habits[h]?'checked':''} onchange="toggleHabitCheck('${journalDate}','${h}',this.checked)"><span>${h}</span></label>`).join('')}
+</div>
+</div>
+<div class="journal-section">
+<h4>Journal</h4>
+<textarea placeholder="What happened today..." oninput="saveJField('${journalDate}','journal',this.value)">${esc(j.journal)}</textarea>
+</div>
+<div class="journal-section">
+<h4>Wins</h4>
+<textarea placeholder="What went well today..." oninput="saveJField('${journalDate}','wins',this.value)">${esc(j.wins)}</textarea>
+</div>
+<div class="journal-section">
+<h4>Gratitude</h4>
+<textarea placeholder="What am I grateful for..." oninput="saveJField('${journalDate}','gratitude',this.value)">${esc(j.gratitude)}</textarea>
+</div>
+</div>
+</div>
+</div>
+</div>`;
+}
+
+function openJournalDay(ds){journalDate=ds;show('journal');}
+function journalNav(dir){const d=new Date(journalDate);d.setDate(d.getDate()+dir);journalDate=d.toISOString().slice(0,10);show('journal');}
+function setQ(date,k,v){const j=getJournal(date);j.questions[k]=v;saveJournal(date,j);show('journal');}
+function toggleHabitCheck(date,habit,val){const j=getJournal(date);j.habits[habit]=val;saveJournal(date,j);show('journal');}
+function saveJField(date,field,val){const j=getJournal(date);j[field]=val;saveJournal(date,j);}
+
+function renderJournalInline(date,j){
+let html=`<div class="date" style="font-size:11px;color:var(--text3);margin-bottom:8px">${date} · ${dayOfWeek(date)}</div>`;
+html+=`<div class="h-check" style="margin-bottom:8px">`;
+CFG.habits.forEach(h=>{
+html+=`<label><input type="checkbox" ${j.habits[h]?'checked':''} onchange="toggleHabitCheck('${date}','${h}',this.checked)"><span>${h}</span></label>`;
+});
+html+=`</div>`;
+if(j.wins)html+=`<div style="font-size:12px;color:var(--green);margin-bottom:4px">Wins: ${esc(j.wins.slice(0,100))}</div>`;
+if(j.gratitude)html+=`<div style="font-size:12px;color:var(--yellow);margin-bottom:4px">Gratitude: ${esc(j.gratitude.slice(0,100))}</div>`;
+if(!j.journal&&!j.wins&&!j.gratitude)html+=`<div style="font-size:12px;color:var(--text3)">No entry yet. Click Journal to write.</div>`;
+return html;
+}
+
+// ============================================================
+// RETREAT
+// ============================================================
+function renderRetreat(ct){
+const qk=quarterKey(today());
+const retreat=getRetreat(qk);
+
+ct.innerHTML=`
+<div class="panel">
+<h2>Quarterly Retreat - ${qk}</h2>
+
+<div class="retreat-section">
+<h3>Wheel of Life</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:12px">Rate your current happiness with each area 1 to 10</p>
+${CFG.wheel.map(w=>`
+<div class="wheel-input">
+<label>${w}</label>
+<input type="range" min="1" max="10" value="${retreat.wheel[w]||5}" oninput="updateWheel('${w}',this.value);this.nextElementSibling.textContent=this.value">
+<div class="val">${retreat.wheel[w]||5}</div>
+</div>
+`).join('')}
+<div class="wheel-wrap"><canvas id="rc" width="260" height="260"></canvas></div>
+</div>
+
+<div class="retreat-section">
+<h3>Focus Area for Next 90 Days</h3>
+<input type="text" value="${esc(retreat.focus)}" placeholder="Which area gets attention..." oninput="saveRetreatField('focus',this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none;margin-bottom:8px">
+<textarea placeholder="Why this one..." oninput="saveRetreatField('focusWhy',this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none;min-height:60px;resize:vertical;font-family:var(--font)">${esc(retreat.focusWhy)}</textarea>
+</div>
+
+<div class="retreat-section">
+<h3>Retrospective</h3>
+<div class="grid grid-3">
+<div>
+<h4 style="font-size:12px;color:var(--green);margin-bottom:4px">What went well</h4>
+<textarea oninput="saveRetreatFieldNested('retrospective','wentWell',this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none;min-height:100px;resize:vertical;font-family:var(--font)">${esc(retreat.retrospective.wentWell)}</textarea>
+</div>
+<div>
+<h4 style="font-size:12px;color:var(--red);margin-bottom:4px">What did not go well</h4>
+<textarea oninput="saveRetreatFieldNested('retrospective','didNotGoWell',this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none;min-height:100px;resize:vertical;font-family:var(--font)">${esc(retreat.retrospective.didNotGoWell)}</textarea>
+</div>
+<div>
+<h4 style="font-size:12px;color:var(--yellow);margin-bottom:4px">What I learned</h4>
+<textarea oninput="saveRetreatFieldNested('retrospective','learned',this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none;min-height:100px;resize:vertical;font-family:var(--font)">${esc(retreat.retrospective.learned)}</textarea>
+</div>
+</div>
+</div>
+
+<div class="retreat-section">
+<h3>Intentions for Next Quarter (3 max)</h3>
+${[0,1,2].map(i=>`
+<input type="text" value="${esc(retreat.intentions[i]||'')}" placeholder="Intention ${i+1}..." oninput="saveIntention(${i},this.value)" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none;margin-bottom:8px">
+`).join('')}
+</div>
+</div>`;
+
+drawWheel('rc',retreat.wheel,CFG.wheel);
+}
+
+function updateWheel(area,val){const qk=quarterKey(today());const r=getRetreat(qk);r.wheel[area]=parseInt(val);saveRetreat(qk,r);show('retreat');}
+function saveRetreatField(k,v){const qk=quarterKey(today());const r=getRetreat(qk);r[k]=v;saveRetreat(qk,r);}
+function saveRetreatFieldNested(section,k,v){const qk=quarterKey(today());const r=getRetreat(qk);r[section][k]=v;saveRetreat(qk,r);}
+function saveIntention(i,v){const qk=quarterKey(today());const r=getRetreat(qk);r.intentions[i]=v;saveRetreat(qk,r);}
+
+// ============================================================
+// PLANNING
+// ============================================================
+function renderPlanning(ct){
+ct.innerHTML=`
+<div class="panel">
+<h2>Planning</h2>
+
+<div class="retreat-section">
+<h3>Life Theme</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:8px">Your personal mission statement</p>
+<textarea oninput="CFG.theme=this.value;saveCfg()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:12px;outline:none;min-height:80px;resize:vertical;font-family:var(--font);line-height:1.6">${esc(CFG.theme)}</textarea>
+</div>
+
+<div class="retreat-section">
+<h3>Core Values</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:8px">3-5 values that guide decisions</p>
+${CFG.values.map((v,i)=>`
+<div style="display:flex;gap:8px;margin-bottom:6px">
+<input type="text" value="${esc(v)}" oninput="CFG.values[${i}]=this.value;saveCfg()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none">
+<button class="btn-ghost btn-sm" onclick="CFG.values.splice(${i},1);saveCfg();show('planning')"><i class="fi fi-rr-trash"></i></button>
+</div>
+`).join('')}
+<button class="btn-ghost btn-sm" onclick="CFG.values.push('New value');saveCfg();show('planning')" style="margin-top:4px"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Value</button>
+</div>
+
+<div class="retreat-section">
+<h3>Roles</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:8px">The roles you hold in life</p>
+${CFG.roles.map((r,i)=>`
+<div style="display:flex;gap:8px;margin-bottom:6px">
+<input type="text" value="${esc(r)}" oninput="CFG.roles[${i}]=this.value;saveCfg()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none">
+<button class="btn-ghost btn-sm" onclick="CFG.roles.splice(${i},1);saveCfg();show('planning')"><i class="fi fi-rr-trash"></i></button>
+</div>
+`).join('')}
+<button class="btn-ghost btn-sm" onclick="CFG.roles.push('New role');saveCfg();show('planning')" style="margin-top:4px"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Role</button>
+</div>
+
+<div class="retreat-section">
+<h3>Settings</h3>
+<div class="grid grid-2">
+<div>
+<label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Birthdate</label>
+<input type="date" value="${CFG.birthdate}" onchange="CFG.birthdate=this.value;saveCfg();show('planning')" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none">
+</div>
+<div>
+<label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px">Life Expectancy</label>
+<input type="number" value="${CFG.lifeExpectancy}" onchange="CFG.lifeExpectancy=parseInt(this.value);saveCfg()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none">
+</div>
+</div>
+</div>
+
+<div class="retreat-section">
+<h3>Daily Questions</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:8px">"Did I do my best to..." - rated 1-10</p>
+${CFG.questions.map((q,i)=>`
+<div style="display:flex;gap:8px;margin-bottom:6px">
+<input type="text" value="${esc(q.text)}" oninput="CFG.questions[${i}].text=this.value;saveCfg()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none">
+<button class="btn-ghost btn-sm" onclick="CFG.questions.splice(${i},1);saveCfg();show('planning')"><i class="fi fi-rr-trash"></i></button>
+</div>
+`).join('')}
+<button class="btn-ghost btn-sm" onclick="CFG.questions.push({k:'dq_new',text:'New question...'});saveCfg();show('planning')" style="margin-top:4px"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Question</button>
+</div>
+
+<div class="retreat-section">
+<h3>Habits</h3>
+<p style="font-size:12px;color:var(--text3);margin-bottom:8px">Track 3-5 habits per season</p>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+${CFG.habits.map((h,i)=>`
+<div style="display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px">
+<span style="font-size:12px">${h}</span>
+<button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px" onclick="CFG.habits.splice(${i},1);saveCfg();show('planning')">×</button>
+</div>
+`).join('')}
+</div>
+<div style="display:flex;gap:8px;margin-top:8px">
+<input type="text" id="new-habit" placeholder="New habit..." style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;padding:10px;outline:none">
+<button class="btn-sm btn" onclick="const v=document.getElementById('new-habit').value.trim();if(v){CFG.habits.push(v);saveCfg();show('planning')}">Add</button>
+</div>
+</div>
+</div>`;
+}
+
+// ============================================================
+// PROJECTS
+// ============================================================
+function renderProjects(ct){
+const projects=getProjects();
+const cols=['todo','in-progress','done'];
+const labels={todo:'To Do',progress:'In Progress',done:'Done'};
+
+ct.innerHTML=`
+<div class="panel">
+<h2>Projects</h2>
+<div style="margin-bottom:12px">
+<button class="btn" onclick="addProject()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> New Project</button>
+</div>
+<div class="kanban">
+${cols.map(col=>`
+<div class="kanban-col" id="kcol-${col}">
+<h4>${labels[col]}</h4>
+${projects.filter(p=>p.status===col).map((p,i)=>`
+<div class="kanban-card" draggable="true" ondragstart="dragProject(event,${projects.indexOf(p)})" onclick="editProject(${projects.indexOf(p)})">
+<div>${esc(p.title)}</div>
+${p.desc?`<div class="meta">${esc(p.desc.slice(0,60))}</div>`:''}
+</div>
+`).join('')}
+</div>
+`).join('')}
+</div>
+</div>`;
+}
+
+function addProject(){
+const title=prompt('Project name:');
+if(!title)return;
+const projects=getProjects();
+projects.push({title,desc:'',status:'todo',created:today()});
+saveProjects(projects);
+show('projects');
+}
+
+function editProject(i){
+const projects=getProjects();
+const p=projects[i];
+const title=prompt('Project title:',p.title);
+if(title!==null)p.title=title;
+const desc=prompt('Description:',p.desc);
+if(desc!==null)p.desc=desc;
+const status=prompt('Status (todo/in-progress/done):',p.status);
+if(status&&['todo','in-progress','done'].includes(status))p.status=status;
+saveProjects(projects);
+show('projects');
+}
+
+function dragProject(e,i){e.dataTransfer.setData('text',i);}
+
+// ============================================================
+// TASKS
+// ============================================================
+function renderTasks(ct){
+const tasks=getTasks();
+
+ct.innerHTML=`
+<div class="panel">
+<h2>Tasks</h2>
+<div class="task-input">
+<input type="text" id="new-task" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addTask()">
+<button class="btn" onclick="addTask()">Add</button>
+</div>
+${tasks.map((t,i)=>`
+<div class="task-item ${t.done?'done':''}">
+<input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i})">
+<div class="text">${esc(t.text)}</div>
+<div class="date">${t.date||''}</div>
+<button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px" onclick="deleteTask(${i})">×</button>
+</div>
+`).join('')}
+${tasks.length===0?'<p style="color:var(--text3);font-size:13px">No tasks yet. Add one above.</p>':''}
+</div>`;
+}
+
+function addTask(){
+const input=document.getElementById('new-task');
+const text=input.value.trim();
+if(!text)return;
+const tasks=getTasks();
+tasks.push({text,done:false,created:today(),date:''});
+saveTasks(tasks);
+show('tasks');
+}
+function toggleTask(i){const t=getTasks();t[i].done=!t[i].done;saveTasks(t);show('tasks');}
+function deleteTask(i){const t=getTasks();t.splice(i,1);saveTasks(t);show('tasks');}
+
+// ============================================================
+// PEOPLE
+// ============================================================
+function renderPeople(ct){
+const people=getPeople();
+
+ct.innerHTML=`
+<div class="panel">
+<h2>People</h2>
+<div style="margin-bottom:12px">
+<button class="btn" onclick="addPerson()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Person</button>
+</div>
+<div class="grid grid-3">
+${people.map((p,i)=>`
+<div class="person-card" onclick="editPerson(${i})">
+<div class="avatar">${(p.name||'?')[0].toUpperCase()}</div>
+<div class="name">${esc(p.name)}</div>
+<div class="role">${esc(p.role||'')}</div>
+${p.notes?`<div style="font-size:11px;color:var(--text3);margin-top:4px">${esc(p.notes.slice(0,80))}</div>`:''}
+</div>
+`).join('')}
+${people.length===0?'<p style="color:var(--text3);font-size:13px">No people yet. Add one.</p>':''}
+</div>
+</div>`;
+}
+
+function addPerson(){
+const name=prompt('Person name:');
+if(!name)return;
+const people=getPeople();
+people.push({name,role:'',notes:'',contact:'',created:today()});
+savePeople(people);
+show('people');
+}
+
+function editPerson(i){
+const people=getPeople();
+const p=people[i];
+const name=prompt('Name:',p.name);
+if(name!==null)p.name=name;
+const role=prompt('Role:',p.role);
+if(role!==null)p.role=role;
+const notes=prompt('Notes:',p.notes);
+if(notes!==null)p.notes=notes;
+savePeople(people);
+show('people');
+}
+
+// ============================================================
+// WRITING
+// ============================================================
+function renderWriting(ct){
+const types=['articles','newsletters','youtube-scripts'];
+const labels={articles:'Articles',newsletters:'Newsletters','youtube-scripts':'YouTube Scripts'};
+
+ct.innerHTML=`
+<div class="panel">
+<h2>Writing</h2>
+<div class="tabs">
+${types.map(t=>`<div class="tab" onclick="showWritingType('${t}')">${labels[t]}</div>`).join('')}
+</div>
+<div id="writing-content"></div>
+</div>`;
+showWritingType('articles');
+}
+
+function showWritingType(type){
+const items=getWriting(type);
+const el=document.getElementById('writing-content');
+if(!el)return;
+el.innerHTML=`
+<div style="margin-bottom:12px">
+<button class="btn" onclick="addWriting('${type}')"><i class="fi fi-rr-plus" style="margin-right:4px"></i> New Draft</button>
+</div>
+${items.map((item,i)=>`
+<div class="card" style="margin-bottom:8px;cursor:pointer" onclick="openWriting('${type}',${i})">
+<h3>${esc(item.title||'Untitled')}</h3>
+<div class="meta" style="font-size:11px;color:var(--text3)">${item.date} · ${(item.content||'').slice(0,100)} chars</div>
+</div>
+`).join('')}
+${items.length===0?'<p style="color:var(--text3);font-size:13px">No drafts yet. Start writing.</p>':''}
+`;
+}
+
+function addWriting(type){
+const title=prompt('Title:');
+if(!title)return;
+const items=getWriting(type);
+items.push({title,content:'',date:today()});
+saveWriting(type,items);
+openWriting(type,items.length-1);
+}
+
+function openWriting(type,i){
+const items=getWriting(type);
+const item=items[i];
+const ct=document.getElementById('ct');
+ct.innerHTML=`
+<div class="panel">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<button class="btn-ghost btn-sm" onclick="show('writing')"><i class="fi fi-rr-arrow-left"></i> Back</button>
+<h2 style="margin:0">${esc(item.title)}</h2>
+<button class="btn-sm btn" onclick="saveWritingItem('${type}',${i})">Save</button>
+<button class="btn-ghost btn-sm" onclick="deleteWriting('${type}',${i})"><i class="fi fi-rr-trash"></i></button>
+</div>
+<div class="editor">
+<textarea id="writing-editor" style="min-height:400px">${esc(item.content)}</textarea>
+</div>
+</div>`;
+}
+
+function saveWritingItem(type,i){
+const items=getWriting(type);
+items[i].content=document.getElementById('writing-editor').value;
+saveWriting(type,items);
+show('writing');
+}
+
+function deleteWriting(type,i){
+if(!confirm('Delete this draft?'))return;
+const items=getWriting(type);
+items.splice(i,1);
+saveWriting(type,items);
+show('writing');
+}
+
+// ============================================================
+// LIBRARY
+// ============================================================
+function renderLibrary(ct){
+const books=STORE.get('books',[]);
+
+ct.innerHTML=`
+<div class="panel">
+<h2>Library</h2>
+<div style="margin-bottom:12px">
+<button class="btn" onclick="addBook()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Book</button>
+</div>
+<div class="grid grid-3">
+${books.map((b,i)=>`
+<div class="card" style="cursor:pointer" onclick="editBook(${i})">
+<h3>${esc(b.title)}</h3>
+<div style="font-size:11px;color:var(--text3)">${esc(b.author||'')}</div>
+${b.notes?`<div style="font-size:12px;color:var(--text2);margin-top:4px">${esc(b.notes.slice(0,100))}</div>`:''}
+</div>
+`).join('')}
+${books.length===0?'<p style="color:var(--text3);font-size:13px">No books yet. Add one.</p>':''}
+</div>
+</div>`;
+}
+
+function addBook(){
+const title=prompt('Book title:');
+if(!title)return;
+const books=STORE.get('books',[]);
+books.push({title,author:'',notes:'',created:today()});
+STORE.set('books',books);
+show('library');
+}
+
+function editBook(i){
+const books=STORE.get('books',[]);
+const b=books[i];
+const title=prompt('Title:',b.title);
+if(title!==null)b.title=title;
+const author=prompt('Author:',b.author);
+if(author!==null)b.author=author;
+const notes=prompt('Notes:',b.notes);
+if(notes!==null)b.notes=notes;
+STORE.set('books',books);
+show('library');
+}
+
+// ============================================================
+// AI CHAT
+// ============================================================
+let chatHist=[];
+let busy=false;
+function renderChat(ct){
+ct.innerHTML=`
 <div class="chat-wrap"><div class="msgs" id="msgs">
-<div class="welcome" id="welcome">
-<h1>What do you <span>want to know</span>?</h1>
-<p>I have access to your entire second brain — wiki, contacts, journal, and sources.</p>
-<div class="quick-actions">
-<div class="qa" onclick="qa('What are my interests?')">My interests</div>
-<div class="qa" onclick="qa('Summarize my recent journal')">Journal</div>
-<div class="qa" onclick="qa('Who are my contacts?')">Contacts</div>
-<div class="qa" onclick="qa('What AI tools have I researched?')">AI tools</div>
-<div class="qa" onclick="qa('What is the Mahispal dynasty?')">Mahispal</div>
-<div class="qa" onclick="qa('What systems have I built?')">Systems</div>
+<div class="welcome" id="welcome" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px">
+<h1 style="font-size:28px;font-weight:600;margin-bottom:8px;text-align:center">What do you <span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent">want to know</span>?</h1>
+<p style="color:var(--text2);text-align:center;max-width:450px;line-height:1.6;margin-bottom:28px;font-size:14px">Ask about your journal, tasks, projects, or anything in your Life OS.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:500px">
+<div class="qa" onclick="qa('What are my goals this quarter?')" style="padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:12px;cursor:pointer">Quarter goals</div>
+<div class="qa" onclick="qa('How are my habits this week?')" style="padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:12px;cursor:pointer">Habits</div>
+<div class="qa" onclick="qa('Show my wheel of life scores')" style="padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:12px;cursor:pointer">Wheel of life</div>
+<div class="qa" onclick="qa('What did I write in my journal today?')" style="padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:12px;cursor:pointer">Today's journal</div>
 </div></div>
 <div class="input-area"><div class="input-wrap">
 <textarea id="cin" placeholder="Ask anything..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
 <button class="send-btn" id="sbn" onclick="send()"><i class="fi fi-rr-paper-plane"></i></button>
-</div><div class="tools">
-<div class="tool-btn" onclick="qa('run python: print(sum(range(100)))')"><i class="fi fi-rr-code-simple" style="margin-right:3px"></i>Python</div>
-<div class="tool-btn" onclick="qa('search my knowledge base for AI')"><i class="fi fi-rr-search" style="margin-right:3px"></i>Search</div>
-</div></div></div>`;}
+</div></div></div>`;
+}
 
 function qa(q){document.getElementById('cin').value=q;send();}
 
-async function send(){if(busy)return;const m=document.getElementById('cin').value.trim();if(!m)return;
+async function send(){
+if(busy)return;
+const m=document.getElementById('cin').value.trim();
+if(!m)return;
 const box=document.getElementById('msgs');if(!box)return;
 const w=document.getElementById('welcome');if(w)w.remove();
 box.insertAdjacentHTML('beforeend',`<div class="msg user"><div class="av"><i class="fi fi-rr-user" style="font-size:12px"></i></div><div class="bb">${esc(m)}</div></div>`);
@@ -333,48 +1107,165 @@ box.scrollTop=box.scrollHeight;
 document.getElementById('cin').value='';document.getElementById('cin').style.height='auto';
 busy=true;document.getElementById('sbn').disabled=true;
 chatHist.push({role:'user',content:m});
-try{const ctx=await fetchCtx(m);
-const r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m,history:chatHist.slice(-6),context:ctx})});
-const d=await r.json();document.getElementById('typing')?.remove();
-box.insertAdjacentHTML('beforeend',`<div class="msg ai"><div class="av">🧠</div><div class="bb">${renderMd(d.response||'No reply — the free models are busy. Wait a few seconds and ask again.')}</div></div>`);
-chatHist.push({role:'assistant',content:d.response||''});}catch(e){document.getElementById('typing')?.remove();
-box.insertAdjacentHTML('beforeend',`<div class="msg ai"><div class="av">🧠</div><div class="bb" style="color:var(--red)">Error: ${e.message}</div></div>`);}
-busy=false;document.getElementById('sbn').disabled=false;box.scrollTop=box.scrollHeight;}
 
-async function fetchCtx(q){const ql=q.toLowerCase();const kw=ql.split(/\s+/).filter(w=>w.length>2);const parts=[];
-async function addIdx(p,n){const c=await rf(p);if(c)parts.push(`=== ${p} ===\n${c.slice(0,n||3000)}`);}
-if(/journal|diary|today|recent|wrote/.test(ql))await addIdx('journal/index.md');
-if(/contact|crm|who|people|friend|know/.test(ql))await addIdx('crm/index.md');
-if(/log|changelog|activity|did/.test(ql)){const c=await rf('wiki/log.md');if(c)parts.push('=== wiki/log.md ===\n'+c.slice(-3000));}
-await addIdx('wiki/index.md',4000);
-const scored=[];
-for(const folder of ['wiki/sources','wiki/entities','wiki/concepts','wiki/analyses','crm','journal']){
-const files=await lf(folder);if(!files?.length)continue;
-for(const f of files.slice(0,15)){const c=await rf(f.path);if(!c)continue;
-const s=kw.reduce((a,k)=>a+(c.toLowerCase().split(k).length-1),0);
-if(s>0)scored.push({s,path:f.path,c:c.slice(0,2000)});}}
-scored.sort((a,b)=>b.s-a.s);
-for(const r of scored.slice(0,7))parts.push(`=== ${r.path} ===\n${r.c}`);
-return parts.join('\n\n')||'No relevant data found.';}
+try{
+const ctx=await buildContext(m);
+const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m,history:chatHist.slice(-6),context:ctx})});
+const d=await r.json();
+document.getElementById('typing')?.remove();
+box.insertAdjacentHTML('beforeend',`<div class="msg ai"><div class="av">🧠</div><div class="bb">${renderMd(d.response||'No reply.')}</div></div>`);
+chatHist.push({role:'assistant',content:d.response||''});
+}catch(e){
+document.getElementById('typing')?.remove();
+box.insertAdjacentHTML('beforeend',`<div class="msg ai"><div class="av">🧠</div><div class="bb" style="color:var(--red)">Error: ${e.message}</div></div>`);
+}
+busy=false;document.getElementById('sbn').disabled=false;box.scrollTop=box.scrollHeight;
+}
 
-async function doSearch(){const q=document.getElementById('search').value.trim();if(!q)return;
-ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
-const kw=q.toLowerCase().split(/\s+/).filter(w=>w.length>2);const results=[];
-for(const folder of ['wiki/sources','wiki/entities','wiki/concepts','wiki/analyses','crm','journal']){
-const files=await lf(folder);if(!files?.length)continue;
-for(const f of files){const c=await rf(f.path);if(!c)continue;
-const score=kw.reduce((s,k)=>s+(c.toLowerCase().split(k).length-1),0);
-if(score>0)results.push({name:f.name,path:f.path,score,preview:c.slice(0,200).replace(/\n/g,' ')});}}
-results.sort((a,b)=>b.score-a.score);
-ct.innerHTML=`<div class="panel"><h2>Results for "${esc(q)}"</h2><div class="pg">${results.slice(0,20).map(r=>`<div class="card" onclick="openDoc('${r.path.split('/').slice(0,-1).join('/')}','${r.name}')"><h3>${r.name.replace(/[-_]/g,' ')}</h3><p>${esc(r.preview.slice(0,120))}</p></div>`).join('')||'<p style="color:var(--text3)">No results.</p>'}</div></div>`;}
+async function buildContext(q){
+const parts=[];
+const t=today();
 
-function renderMd(t){if(!t)return'';return t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre style="background:var(--bg3);padding:10px;border-radius:6px;overflow-x:auto;font-size:11px"><code>$2</code></pre>').replace(/`([^`]+)`/g,'<code style="background:var(--bg3);padding:2px 5px;border-radius:3px;font-size:11px">$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');}
+// Today's journal
+const j=getJournal(t);
+parts.push(`=== TODAY'S JOURNAL (${t}) ===\nQuestions: ${JSON.stringify(j.questions)}\nHabits: ${JSON.stringify(j.habits)}\nJournal: ${j.journal||'(empty)'}\nWins: ${j.wins||'(empty)'}\nGratitude: ${j.gratitude||'(empty)'}`);
+
+// Config
+parts.push(`=== LIFE OS CONFIG ===\nTheme: ${CFG.theme}\nValues: ${CFG.values.join(', ')}\nRoles: ${CFG.roles.join(', ')}\nHabits: ${CFG.habits.join(', ')}\nQuestions: ${CFG.questions.map(q=>q.text).join('; ')}`);
+
+// Tasks
+const tasks=getTasks();
+if(tasks.length)parts.push(`=== TASKS ===\n${tasks.map(t=>`${t.done?'[x]':'[ ]'} ${t.text}`).join('\n')}`);
+
+// Projects
+const projects=getProjects();
+if(projects.length)parts.push(`=== PROJECTS ===\n${projects.map(p=>`[${p.status}] ${p.title}: ${p.desc||''}`).join('\n')}`);
+
+// Recent journal entries
+parts.push(`=== RECENT JOURNAL (7 days) ===`);
+for(let i=1;i<=7;i++){
+const d=new Date();d.setDate(d.getDate()-i);
+const dj=getJournal(d.toISOString().slice(0,10));
+if(dj.journal||dj.wins)parts.push(`${d.toISOString().slice(0,10)}: ${dj.journal||''} ${dj.wins?'Wins: '+dj.wins:''}`);
+}
+
+// Retreat
+const qk=quarterKey(t);
+const retreat=getRetreat(qk);
+parts.push(`=== QUARTERLY RETREAT (${qk}) ===\nWheel: ${JSON.stringify(retreat.wheel)}\nFocus: ${retreat.focus||'(none)'}\nIntentions: ${retreat.intentions.join(', ')}`);
+
+// People
+const people=getPeople();
+if(people.length)parts.push(`=== PEOPLE ===\n${people.map(p=>`${p.name} (${p.role||''}): ${p.notes||''}`).join('\n')}`);
+
+return parts.join('\n\n');
+}
+
+// ============================================================
+// GRAPH (simplified from original)
+// ============================================================
+function renderGraph(ct){
+ct.innerHTML=`
+<div style="padding:20px;max-width:900px;margin:0 auto;width:100%">
+<h2 style="font-size:18px;font-weight:600;margin-bottom:16px">Graph</h2>
+<p style="color:var(--text3);font-size:13px;margin-bottom:16px">Visual connections between your journal entries, tasks, projects, and people.</p>
+<canvas id="gc" style="width:100%;height:400px;background:radial-gradient(ellipse at center,#14141c 0%,#0a0a0f 75%);border:1px solid var(--border);border-radius:10px;cursor:grab;touch-action:none"></canvas>
+</div>`;
+buildSimpleGraph();
+}
+
+function buildSimpleGraph(){
+const cv=document.getElementById('gc');if(!cv)return;
+const ctx=cv.getContext('2d');
+const d=window.devicePixelRatio||1;
+cv.width=cv.clientWidth*d;cv.height=400*d;
+ctx.setTransform(d,0,0,d,0,0);
+
+const w=cv.clientWidth,h=400;
+const nodes=[];
+
+// Add journal entries
+for(let i=6;i>=0;i--){
+const d=new Date();d.setDate(d.getDate()-i);
+const ds=d.toISOString().slice(0,10);
+const j=getJournal(ds);
+nodes.push({x:100+i*100,y:100+Math.random()*60,r:8,color:'#4d7cfe',label:ds.slice(5)});
+}
+
+// Add tasks
+const tasks=getTasks().slice(0,5);
+tasks.forEach((t,i)=>{
+nodes.push({x:100+i*120,y:250+Math.random()*40,r:6,color:'#22c55e',label:t.text.slice(0,15)});
+});
+
+// Add people
+const people=getPeople().slice(0,3);
+people.forEach((p,i)=>{
+nodes.push({x:150+i*150,y:350,r:7,color:'#f472b6',label:p.name});
+});
+
+// Draw edges
+ctx.strokeStyle='rgba(148,163,255,.2)';
+ctx.lineWidth=1;
+for(let i=0;i<nodes.length-1;i++){
+ctx.beginPath();
+ctx.moveTo(nodes[i].x,nodes[i].y);
+ctx.lineTo(nodes[i+1].x,nodes[i+1].y);
+ctx.stroke();
+}
+
+// Draw nodes
+nodes.forEach(n=>{
+ctx.beginPath();
+ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+ctx.fillStyle=n.color;
+ctx.fill();
+ctx.strokeStyle='rgba(255,255,255,.3)';
+ctx.lineWidth=1;
+ctx.stroke();
+ctx.fillStyle='#8899b8';
+ctx.font='10px Inter,system-ui,sans-serif';
+ctx.fillText(n.label,n.x+n.r+4,n.y+3);
+});
+}
+
+// ============================================================
+// SEARCH
+// ============================================================
+function doSearch(){
+const q=document.getElementById('search').value.trim().toLowerCase();
+if(!q)return;
+const results=[];
+// Search tasks
+getTasks().forEach((t,i)=>{if(t.text.toLowerCase().includes(q))results.push({type:'task',text:t.text,view:'tasks'})});
+// Search people
+getPeople().forEach((p,i)=>{if(p.name.toLowerCase().includes(q)||p.notes?.toLowerCase().includes(q))results.push({type:'person',text:p.name,view:'people'})});
+// Search projects
+getProjects().forEach((p,i)=>{if(p.title.toLowerCase().includes(q))results.push({type:'project',text:p.title,view:'projects'})});
+
+const ct=document.getElementById('ct');
+ct.innerHTML=`
+<div class="panel">
+<h2>Results for "${esc(q)}"</h2>
+${results.length?results.map(r=>`
+<div class="card" style="margin-bottom:8px;cursor:pointer" onclick="show('${r.view}')">
+<div style="font-size:11px;color:var(--text3);text-transform:uppercase">${r.type}</div>
+<div style="font-size:13px">${esc(r.text)}</div>
+</div>
+`).join(''):'<p style="color:var(--text3)">No results found.</p>'}
+</div>`;
+}
+
+// ============================================================
+// UTILS
+// ============================================================
 function esc(t){const d=document.createElement('div');d.textContent=t||'';return d.innerHTML;}
+function renderMd(t){if(!t)return'';return t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre style="background:var(--bg3);padding:10px;border-radius:6px;overflow-x:auto;font-size:11px"><code>$2</code></pre>').replace(/`([^`]+)`/g,'<code style="background:var(--bg3);padding:2px 5px;border-radius:3px;font-size:11px">$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');}
 
-async function init(){const[s,e,c]=await Promise.all([lf('wiki/sources'),lf('wiki/entities'),lf('wiki/concepts')]);
-document.getElementById('wc').textContent=(s?.length||0)+(e?.length||0)+(c?.length||0);show('chat');}
-init();
+// ============================================================
+// INIT
+// ============================================================
+show('dashboard');
 </script>
-<style>@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
 </body>
 </html>
