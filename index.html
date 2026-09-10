@@ -252,6 +252,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 <div class="ni" id="n-people" onclick="show('people')"><i class="fi fi-rr-users"></i> People</div>
 <div class="ni" id="n-writing" onclick="show('writing')"><i class="fi fi-rr-pen"></i> Writing</div>
 <div class="ni" id="n-library" onclick="show('library')"><i class="fi fi-rr-book-open"></i> Library</div>
+<div class="nav-label">Obsidian Vault</div>
+<div class="ni" id="n-vault" onclick="show('vault')"><i class="fi fi-rr-folder"></i> Vault Browser</div>
+<div class="ni" onclick="showVaultFolder('01 Journal')"><i class="fi fi-rr-notebook"></i> Vault Journal</div>
+<div class="ni" onclick="showVaultFolder('02 Retreats')"><i class="fi fi-rr-mountain"></i> Vault Retreats</div>
+<div class="ni" onclick="showVaultFolder('03 Planning')"><i class="fi fi-rr-bullseye"></i> Vault Planning</div>
+<div class="ni" onclick="showVaultFolder('04 Projects')"><i class="fi fi-rr-kanban"></i> Vault Projects</div>
+<div class="ni" onclick="showVaultFolder('05 Areas')"><i class="fi fi-rr-layers"></i> Vault Areas</div>
+<div class="ni" onclick="showVaultFolder('Meta')"><i class="fi fi-rr-settings"></i> Vault Meta</div>
 <div class="nav-label">Tools</div>
 <div class="ni" id="n-chat" onclick="show('chat')"><i class="fi fi-rr-comment"></i> AI Chat</div>
 <div class="ni" id="n-graph" onclick="show('graph')"><i class="fi fi-rr-diagram-project"></i> Graph</div>
@@ -423,6 +431,7 @@ else if(view==='library')renderLibrary(ct);
 else if(view==='chat')renderChat(ct);
 else if(view==='graph')renderGraph(ct);
 else if(view==='wiki')renderWiki(ct,currentSub);
+else if(view==='vault')renderVault(ct);
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
@@ -1604,6 +1613,117 @@ ${results.length?results.map(r=>`
 `).join(''):'<p style="color:var(--text3)">No results found.</p>'}
 </div>`;
 }
+
+// ============================================================
+// VAULT BROWSER (life-os repo)
+// ============================================================
+const VAULT_API='https://api.github.com/repos/Gongwasubash/life-os/contents';
+const vaultCache={};
+async function vaultDir(path){const k='vd:'+path;if(vaultCache[k])return vaultCache[k];try{const r=await fetch(VAULT_API+'/'+encodeURIComponent(path));if(!r.ok)return[];const d=await r.json();if(!Array.isArray(d))return[];vaultCache[k]=d;return vaultCache[k];}catch(e){return[];}}
+async function vaultFile(path){const k='vf:'+path;if(vaultCache[k])return vaultCache[k];try{const r=await fetch(VAULT_API+'/'+encodeURIComponent(path));if(!r.ok)return'';const d=await r.json();if(d.content){const b64=d.content.replace(/\n/g,'');const bin=atob(b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);const text=new TextDecoder('utf-8').decode(bytes);vaultCache[k]=text;return text;}}catch(e){}return'';}
+
+let vaultPath='';
+async function renderVault(ct){
+ct.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+const files=await vaultDir('');
+const folders=files.filter(f=>f.type==='folder');
+const markdowns=files.filter(f=>f.name.endsWith('.md'));
+ct.innerHTML=`
+<div class="panel">
+<h1><i class="fi fi-rr-folder" style="margin-right:8px"></i>Obsidian Vault</h1>
+<p style="color:var(--text3);margin-bottom:16px">Life OS Compass vault by Daniel Agrici</p>
+<div class="grid grid-3" style="margin-bottom:16px">
+<div class="memento"><div class="big">${folders.length}</div><div class="sub"><i class="fi fi-rr-folder" style="margin-right:2px"></i>Folders</div></div>
+<div class="memento"><div class="big">${markdowns.length}</div><div class="sub"><i class="fi fi-rr-document" style="margin-right:2px"></i>Root Files</div></div>
+<div class="memento"><div class="big">Life OS</div><div class="sub"><i class="fi fi-rr-compass" style="margin-right:2px"></i>Template</div></div>
+</div>
+<h3><i class="fi fi-rr-folder" style="margin-right:4px"></i>Vault Folders</h3>
+<div class="grid grid-2">
+${folders.map(f=>`
+<div class="card" onclick="showVaultFolder('${f.name}')">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:40px;height:40px;border-radius:8px;background:rgba(108,92,231,.15);display:flex;align-items:center;justify-content:center"><i class="fi fi-rr-folder" style="color:var(--accent);font-size:18px"></i></div>
+<div>
+<div style="font-weight:500">${f.name}</div>
+<div style="font-size:11px;color:var(--text3)">${f.path}</div>
+</div>
+</div>
+</div>
+`).join('')}
+</div>
+${markdowns.length?`<h3 style="margin-top:16px"><i class="fi fi-rr-document" style="margin-right:4px"></i>Root Files</h3>
+<div class="grid grid-2">
+${markdowns.map(f=>`
+<div class="card" onclick="showVaultFile('${f.path}')">
+<div style="display:flex;align-items:center;gap:8px">
+<i class="fi fi-rr-document" style="font-size:16px;color:var(--accent)"></i>
+<div>
+<div style="font-weight:500">${f.name.replace('.md','')}</div>
+<div style="font-size:11px;color:var(--text3)">${f.size} bytes</div>
+</div>
+</div>
+</div>
+`).join('')}
+</div>`:''}
+</div>`;
+}
+
+async function showVaultFolder(path){
+vaultPath=path;
+const ct=document.getElementById('ct');
+ct.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+const files=await vaultDir(path);
+const folders=files.filter(f=>f.type==='folder');
+const markdowns=files.filter(f=>f.name.endsWith('.md'));
+ct.innerHTML=`
+<div class="panel">
+<div class="back" onclick="show('vault')" style="display:inline-flex;align-items:center;gap:4px;color:var(--text3);font-size:12px;cursor:pointer;margin-bottom:12px"><i class="fi fi-rr-arrow-left"></i> Back to Vault</div>
+<h1><i class="fi fi-rr-folder" style="margin-right:8px"></i>${path}</h1>
+${folders.length?`<h3 style="margin-top:16px"><i class="fi fi-rr-folder" style="margin-right:4px"></i>Subfolders</h3>
+<div class="grid grid-2">
+${folders.map(f=>`
+<div class="card" onclick="showVaultFolder('${path}/${f.name}')">
+<div style="display:flex;align-items:center;gap:8px">
+<i class="fi fi-rr-folder" style="font-size:18px;color:var(--yellow)"></i>
+<div style="font-weight:500">${f.name}</div>
+</div>
+</div>
+`).join('')}
+</div>`:''}
+${markdowns.length?`<h3 style="margin-top:16px"><i class="fi fi-rr-document" style="margin-right:4px"></i>Documents</h3>
+<div class="grid grid-2">
+${markdowns.map(f=>`
+<div class="card" onclick="showVaultFile('${f.path}')">
+<div style="display:flex;align-items:center;gap:8px">
+<i class="fi fi-rr-document" style="font-size:14px;color:var(--accent)"></i>
+<div>
+<div style="font-weight:500">${f.name.replace('.md','')}</div>
+<div style="font-size:11px;color:var(--text3)">${f.size} bytes</div>
+</div>
+</div>
+</div>
+`).join('')}
+</div>`:''}
+${!folders.length&&!markdowns.length?'<p style="color:var(--text3)"><i class="fi fi-rr-folder-open" style="margin-right:4px"></i>Empty folder</p>':''}
+</div>`;
+}
+
+async function showVaultFile(path){
+const ct=document.getElementById('ct');
+ct.innerHTML='<div style="text-align:center;padding:40px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+const content=await vaultFile(path);
+const folder=path.split('/').slice(0,-1).join('/');
+const name=path.split('/').pop().replace('.md','');
+ct.innerHTML=`
+<div class="panel">
+<div class="back" onclick="${folder?"showVaultFolder('"+folder+"')":'show vault'}" style="display:inline-flex;align-items:center;gap:4px;color:var(--text3);font-size:12px;cursor:pointer;margin-bottom:12px"><i class="fi fi-rr-arrow-left"></i> Back</div>
+<h1><i class="fi fi-rr-document" style="margin-right:8px"></i>${name}</h1>
+<div style="font-size:11px;color:var(--text3);margin-bottom:16px">${path}</div>
+<div style="line-height:1.8;font-size:14px;white-space:pre-wrap">${vaultRenderMd(content)}</div>
+</div>`;
+}
+
+function vaultRenderMd(t){if(!t)return'';return t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre style="background:var(--bg3);padding:10px;border-radius:6px;overflow-x:auto;font-size:11px"><code>$2</code></pre>').replace(/`([^`]+)`/g,'<code style="background:var(--bg3);padding:2px 5px;border-radius:3px;font-size:11px">$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^### (.+)$/gm,'<h3 style="margin:12px 0 6px;font-size:15px">$1</h3>').replace(/^## (.+)$/gm,'<h2 style="margin:14px 0 8px;font-size:17px">$1</h2>').replace(/^# (.+)$/gm,'<h1 style="margin:16px 0 10px;font-size:20px">$1</h1>').replace(/^\> (.+)$/gm,'<blockquote style="border-left:3px solid var(--accent);padding-left:12px;color:var(--text2);margin:8px 0">$1</blockquote>').replace(/\[\[([^\]]+)\]\]/g,'<span style="color:var(--accent);cursor:pointer">$1</span>').replace(/\n/g,'<br>');}
 
 // ============================================================
 // UTILS
