@@ -637,7 +637,11 @@ ${[1,2,3,4,5,6,7,8,9,10].map(v=>`<div class="q-btn ${j.questions[q.k]===v?'activ
 <div class="journal-section">
 <h4><i class="fi fi-rr-check-circle" style="margin-right:4px"></i>Habits</h4>
 <div class="h-check">
-${CFG.habits.map(h=>`<label><input type="checkbox" ${j.habits[h]?'checked':''} onchange="toggleHabitCheck('${journalDate}','${h}',this.checked)"><span>${h}</span></label>`).join('')}
+${CFG.habits.map(h=>`<label style="display:flex;align-items:center;gap:4px"><input type="checkbox" ${j.habits[h]?'checked':''} onchange="toggleHabitCheck('${journalDate}','${h}',this.checked)"><span>${h}</span>${h.length>10?`<button onclick="removeHabit('${h}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:10px"><i class="fi fi-rr-cross-small"></i></button>`:''}</label>`).join('')}
+</div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<input type="text" id="new-habit-input" placeholder="New habit..." onkeydown="if(event.key==='Enter')addHabit()" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;padding:6px 8px;outline:none">
+<button class="btn-ghost btn-sm" onclick="addHabit()"><i class="fi fi-rr-plus"></i> Add</button>
 </div>
 </div>
 <div class="journal-section">
@@ -700,6 +704,24 @@ j.events.splice(i,1);
 saveJournal(date,j);
 show('journal');
 }
+}
+
+function addHabit(){
+const input=document.getElementById('new-habit-input');
+const name=input.value.trim();
+if(!name)return;
+if(!CFG.habits.includes(name)){
+CFG.habits.push(name);
+saveCfg();
+show('journal');
+}
+}
+
+function removeHabit(name){
+if(!confirm('Remove habit: '+name+'?'))return;
+CFG.habits=CFG.habits.filter(h=>h!==name);
+saveCfg();
+show('journal');
 }
 
 function renderJournalInline(date,j){
