@@ -256,6 +256,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 <div class="ni" id="n-chat" onclick="show('chat')"><i class="fi fi-rr-comment"></i> AI Chat</div>
 <div class="ni" id="n-graph" onclick="show('graph')"><i class="fi fi-rr-diagram-project"></i> Graph</div>
 <div class="ni" onclick="location.href='terminal.html'"><i class="fi fi-rr-terminal"></i> Terminal</div>
+<div class="ni" id="sync-btn" onclick="syncAll()" style="color:var(--green)"><i class="fi fi-rr-refresh"></i> Sync from GitHub</div>
 </nav>
 <div class="user-card">
 <div class="user-avatar"><i class="fi fi-rr-user" style="font-size:14px"></i></div>
@@ -278,6 +279,59 @@ const GH_API='/api/github';
 const ghCache={};
 async function ghDir(path){if(ghCache[path])return ghCache[path];try{const r=await fetch(GH_API+'?path='+encodeURIComponent(path));if(!r.ok)return[];const d=await r.json();if(!Array.isArray(d))return[];ghCache[path]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));return ghCache[path];}catch(e){console.error('ghDir error:',e);return[];}}
 async function ghFile(path){const k='f:'+path;if(ghCache[k])return ghCache[k];try{const url=GH_API+'?path='+encodeURIComponent(path);console.log('ghFile fetching:',url);const r=await fetch(url);console.log('ghFile response:',r.status,r.ok);if(!r.ok){const err=await r.text();console.error('ghFile error body:',err);return'';}const d=await r.json();console.log('ghFile data keys:',Object.keys(d));if(d.content){const b64=d.content.replace(/\n/g,'');const bin=atob(b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);const text=new TextDecoder('utf-8').decode(bytes);ghCache[k]=text;console.log('ghFile content length:',text.length);return text;}}catch(e){console.error('ghFile exception:',e,path);}return'';}
+
+// ============================================================
+// SYNC FROM GITHUB
+// ============================================================
+async function syncJournal(){
+const files=await ghDir('journal');
+let count=0;
+for(const f of files){
+if(f.name==='index')continue;
+const content=await ghFile('journal/'+f.name+'.md');
+if(!content)continue;
+const dateMatch=f.name.match(/^(\d{4}-\d{2}-\d{2})/);
+if(!dateMatch)continue;
+const date=dateMatch[1];
+const existing=getJournal(date);
+if(existing.journal)continue;
+const body=content.replace(/^---[\s\S]*?---\n*/,'').trim();
+if(body){
+existing.journal=body.slice(0,2000);
+saveJournal(date,existing);
+count++;
+}
+}
+return count;
+}
+
+async function syncPeople(){
+const files=await ghDir('crm');
+let count=0;
+for(const f of files){
+if(f.name==='index')continue;
+const content=await ghFile('crm/'+f.name+'.md');
+if(!content)continue;
+const name=f.name.replace(/[-_]/g,' ');
+const people=getPeople();
+if(people.find(p=>p.name.toLowerCase()===name.toLowerCase()))continue;
+const body=content.replace(/^---[\s\S]*?---\n*/,'').trim();
+people.push({name,role:'',contact:'',notes:body.slice(0,500),created:today()});
+savePeople(people);
+count++;
+}
+return count;
+}
+
+async function syncAll(){
+const btn=document.getElementById('sync-btn');
+if(btn)btn.innerHTML='<i class="fi fi-rr-spinner" style="animation:spin 1s linear infinite"></i> Syncing...';
+const jCount=await syncJournal();
+const pCount=await syncPeople();
+if(btn)btn.innerHTML='<i class="fi fi-rr-check"></i> Synced!';
+alert('Synced: '+jCount+' journal entries, '+pCount+' contacts from GitHub');
+setTimeout(()=>{if(btn)btn.innerHTML='<i class="fi fi-rr-refresh" style="margin-right:4px"></i> Sync from GitHub';},2000);
+}
 
 // ============================================================
 // DATA LAYER
