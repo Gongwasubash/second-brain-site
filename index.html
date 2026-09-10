@@ -274,12 +274,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 // ============================================================
 // GITHUB DATA
 // ============================================================
-const GH='Gongwasubash/ai';
-const API='https://api.github.com/repos/'+GH+'/contents';
-const RAW='https://raw.githubusercontent.com/'+GH+'/main';
+const GH_API='/api/github';
 const ghCache={};
-async function ghDir(path){if(ghCache[path])return ghCache[path];try{const r=await fetch(API+'/'+path,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)return[];const d=await r.json();ghCache[path]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));return ghCache[path];}catch(e){return[];}}
-async function ghFile(path){const k='f:'+path;if(ghCache[k])return ghCache[k];try{const r=await fetch(API+'/'+path,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)return'';const d=await r.json();if(d.content){const b64=d.content.replace(/\n/g,'');const bin=atob(b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);const text=new TextDecoder('utf-8').decode(bytes);ghCache[k]=text;return text;}}catch(e){console.error('ghFile error:',e);}return'';}
+async function ghDir(path){if(ghCache[path])return ghCache[path];try{const r=await fetch(GH_API+'?path='+encodeURIComponent(path));if(!r.ok)return[];const d=await r.json();if(!Array.isArray(d))return[];ghCache[path]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));return ghCache[path];}catch(e){console.error('ghDir error:',e);return[];}}
+async function ghFile(path){const k='f:'+path;if(ghCache[k])return ghCache[k];try{const r=await fetch(GH_API+'?path='+encodeURIComponent(path));if(!r.ok){console.error('ghFile HTTP',r.status,path);return'';}const d=await r.json();if(d.content){const b64=d.content.replace(/\n/g,'');const bin=atob(b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);const text=new TextDecoder('utf-8').decode(bytes);ghCache[k]=text;return text;}}catch(e){console.error('ghFile error:',e,path);}return'';}
 
 // ============================================================
 // DATA LAYER
