@@ -403,38 +403,38 @@ ct.innerHTML=`
 <div class="grid grid-3" style="margin-bottom:16px">
 <div class="memento">
 <div class="big">${daysLived.toLocaleString()}</div>
-<div class="sub">days lived</div>
+<div class="sub"><i class="fi fi-rr-clock" style="margin-right:2px"></i>days lived</div>
 <div class="bar"><div class="bar-fill" style="width:${pct}%"></div></div>
 <div class="sub" style="margin-top:6px">${daysRemaining.toLocaleString()} days remaining</div>
 </div>
 <div class="memento">
 <div class="big">${recentAvg}</div>
-<div class="sub">avg question score (7d)</div>
+<div class="sub"><i class="fi fi-rr-star" style="margin-right:2px"></i>avg question score (7d)</div>
 </div>
 <div class="memento">
 <div class="big">${streak}</div>
-<div class="sub">day habit streak</div>
+<div class="sub"><i class="fi fi-rr-flame" style="margin-right:2px"></i>day habit streak</div>
 </div>
 </div>
 
 <div class="grid grid-2" style="margin-bottom:16px">
 <div class="card">
-<h3>Wheel of Life</h3>
+<h3><i class="fi fi-rr-diagram-project" style="margin-right:4px"></i>Wheel of Life</h3>
 <div class="wheel-wrap"><canvas id="wc" width="260" height="260"></canvas></div>
 </div>
 <div class="card">
-<h3>Daily Questions (7 day trend)</h3>
+<h3><i class="fi fi-rr-chart-line" style="margin-right:4px"></i>Daily Questions (7 day trend)</h3>
 <div id="dq-chart"></div>
 </div>
 </div>
 
 <div class="grid grid-2" style="margin-bottom:16px">
 <div class="card">
-<h3>Habit Canvas (30 days)</h3>
+<h3><i class="fi fi-rr-calendar-check" style="margin-right:4px"></i>Habit Canvas (30 days)</h3>
 <div id="habit-canvas"></div>
 </div>
 <div class="card">
-<h3>Quick Actions</h3>
+<h3><i class="fi fi-rr-bolt" style="margin-right:4px"></i>Quick Actions</h3>
 <div class="qlinks" style="margin-top:8px">
 <div class="qlink" onclick="show('journal')"><i class="fi fi-rr-plus" style="font-size:12px"></i> New Journal Entry</div>
 <div class="qlink" onclick="show('tasks')"><i class="fi fi-rr-checkbox" style="font-size:12px"></i> Add Task</div>
@@ -610,19 +610,19 @@ ct.innerHTML=`
 <div class="panel">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
 <button class="btn-ghost btn-sm" onclick="journalNav(-1)"><i class="fi fi-rr-arrow-left"></i></button>
-<h2 style="margin:0">${months[month]} ${year}</h2>
+<h2 style="margin:0"><i class="fi fi-rr-notebook" style="margin-right:8px"></i>${months[month]} ${year}</h2>
 <button class="btn-ghost btn-sm" onclick="journalNav(1)"><i class="fi fi-rr-arrow-right"></i></button>
 </div>
-<p style="color:var(--text3);font-size:12px;margin-bottom:12px">Click any day to write. Rate questions 1-10 (effort), check habits, write journal/wins/gratitude.</p>
+<p style="color:var(--text3);font-size:12px;margin-bottom:12px"><i class="fi fi-rr-information" style="margin-right:4px"></i>Click any day to write. Rate questions 1-10 (effort), check habits, write journal/wins/gratitude. Data saves automatically.</p>
 <div class="grid grid-2">
 <div class="card">
 <div class="cal-grid">${calHtml}</div>
 </div>
 <div>
 <div class="journal-entry">
-<div class="date" style="font-size:13px;font-weight:600;color:var(--accent)">${journalDate} · ${dayOfWeek(journalDate)}</div>
+<div class="date" style="font-size:13px;font-weight:600;color:var(--accent)"><i class="fi fi-rr-calendar" style="margin-right:4px"></i>${journalDate} · ${dayOfWeek(journalDate)}</div>
 <div class="journal-section">
-<h4>Daily Questions (1-10 effort)</h4>
+<h4><i class="fi fi-rr-star" style="margin-right:4px"></i>Daily Questions (1-10 effort)</h4>
 <div class="q-grid">
 ${CFG.questions.map(q=>`
 <div class="q-item">
@@ -635,21 +635,21 @@ ${[1,2,3,4,5,6,7,8,9,10].map(v=>`<div class="q-btn ${j.questions[q.k]===v?'activ
 </div>
 </div>
 <div class="journal-section">
-<h4>Habits</h4>
+<h4><i class="fi fi-rr-check-circle" style="margin-right:4px"></i>Habits</h4>
 <div class="h-check">
 ${CFG.habits.map(h=>`<label><input type="checkbox" ${j.habits[h]?'checked':''} onchange="toggleHabitCheck('${journalDate}','${h}',this.checked)"><span>${h}</span></label>`).join('')}
 </div>
 </div>
 <div class="journal-section">
-<h4>Journal</h4>
+<h4><i class="fi fi-rr-pen" style="margin-right:4px"></i>Journal</h4>
 <textarea placeholder="What happened today..." oninput="saveJField('${journalDate}','journal',this.value)">${esc(j.journal)}</textarea>
 </div>
 <div class="journal-section">
-<h4>Wins</h4>
+<h4><i class="fi fi-rr-trophy" style="margin-right:4px"></i>Wins</h4>
 <textarea placeholder="What went well today..." oninput="saveJField('${journalDate}','wins',this.value)">${esc(j.wins)}</textarea>
 </div>
 <div class="journal-section">
-<h4>Gratitude</h4>
+<h4><i class="fi fi-rr-heart" style="margin-right:4px"></i>Gratitude</h4>
 <textarea placeholder="What am I grateful for..." oninput="saveJField('${journalDate}','gratitude',this.value)">${esc(j.gratitude)}</textarea>
 </div>
 </div>
@@ -686,10 +686,10 @@ const retreat=getRetreat(qk);
 
 ct.innerHTML=`
 <div class="panel">
-<h2>Quarterly Retreat - ${qk}</h2>
+<h2><i class="fi fi-rr-mountain" style="margin-right:8px"></i>Quarterly Retreat - ${qk}</h2>
 
 <div class="retreat-section">
-<h3>Wheel of Life</h3>
+<h3><i class="fi fi-rr-diagram-project" style="margin-right:4px"></i>Wheel of Life</h3>
 <p style="font-size:12px;color:var(--text3);margin-bottom:12px">Rate your current happiness with each area 1 to 10</p>
 ${CFG.wheel.map(w=>`
 <div class="wheel-input">
@@ -747,16 +747,16 @@ function saveIntention(i,v){const qk=quarterKey(today());const r=getRetreat(qk);
 function renderPlanning(ct){
 ct.innerHTML=`
 <div class="panel">
-<h2>Planning</h2>
+<h2><i class="fi fi-rr-bullseye" style="margin-right:8px"></i>Planning</h2>
 
 <div class="retreat-section">
-<h3>Life Theme</h3>
+<h3><i class="fi fi-rr-compass" style="margin-right:4px"></i>Life Theme</h3>
 <p style="font-size:12px;color:var(--text3);margin-bottom:8px">Your personal mission statement</p>
 <textarea oninput="CFG.theme=this.value;saveCfg()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;padding:12px;outline:none;min-height:80px;resize:vertical;font-family:var(--font);line-height:1.6">${esc(CFG.theme)}</textarea>
 </div>
 
 <div class="retreat-section">
-<h3>Core Values</h3>
+<h3><i class="fi fi-rr-star" style="margin-right:4px"></i>Core Values</h3>
 <p style="font-size:12px;color:var(--text3);margin-bottom:8px">3-5 values that guide decisions</p>
 ${CFG.values.map((v,i)=>`
 <div style="display:flex;gap:8px;margin-bottom:6px">
@@ -834,14 +834,14 @@ const labels={todo:'To Do',progress:'In Progress',done:'Done'};
 
 ct.innerHTML=`
 <div class="panel">
-<h2>Projects</h2>
+<h2><i class="fi fi-rr-kanban" style="margin-right:8px"></i>Projects</h2>
 <div style="margin-bottom:12px">
 <button class="btn" onclick="addProject()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> New Project</button>
 </div>
 <div class="kanban">
 ${cols.map(col=>`
 <div class="kanban-col" id="kcol-${col}">
-<h4>${labels[col]}</h4>
+<h4>${col==='todo'?'<i class="fi fi-rr-clipboard-list" style="margin-right:4px"></i>':col==='in-progress'?'<i class="fi fi-rr-spinner" style="margin-right:4px"></i>':'<i class="fi fi-rr-check-circle" style="margin-right:4px"></i>'}${labels[col]}</h4>
 ${projects.filter(p=>p.status===col).map((p,i)=>`
 <div class="kanban-card" draggable="true" ondragstart="dragProject(event,${projects.indexOf(p)})" onclick="editProject(${projects.indexOf(p)})">
 <div>${esc(p.title)}</div>
@@ -866,6 +866,15 @@ show('projects');
 function editProject(i){
 const projects=getProjects();
 const p=projects[i];
+const action=prompt('Edit (e) or Delete (d)?','e');
+if(action==='d'){
+if(confirm('Delete project: '+p.title+'?')){
+projects.splice(i,1);
+saveProjects(projects);
+show('projects');
+}
+return;
+}
 const title=prompt('Project title:',p.title);
 if(title!==null)p.title=title;
 const desc=prompt('Description:',p.desc);
@@ -886,20 +895,20 @@ const tasks=getTasks();
 
 ct.innerHTML=`
 <div class="panel">
-<h2>Tasks</h2>
+<h2><i class="fi fi-rr-checkbox" style="margin-right:8px"></i>Tasks</h2>
 <div class="task-input">
 <input type="text" id="new-task" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addTask()">
-<button class="btn" onclick="addTask()">Add</button>
+<button class="btn" onclick="addTask()"><i class="fi fi-rr-plus"></i> Add</button>
 </div>
 ${tasks.map((t,i)=>`
 <div class="task-item ${t.done?'done':''}">
 <input type="checkbox" ${t.done?'checked':''} onchange="toggleTask(${i})">
 <div class="text">${esc(t.text)}</div>
 <div class="date">${t.date||''}</div>
-<button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px" onclick="deleteTask(${i})">×</button>
+<button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px" onclick="deleteTask(${i})"><i class="fi fi-rr-trash"></i></button>
 </div>
 `).join('')}
-${tasks.length===0?'<p style="color:var(--text3);font-size:13px">No tasks yet. Add one above.</p>':''}
+${tasks.length===0?'<p style="color:var(--text3);font-size:13px"><i class="fi fi-rr-inbox" style="margin-right:4px"></i>No tasks yet. Add one above.</p>':''}
 </div>`;
 }
 
@@ -918,47 +927,111 @@ function deleteTask(i){const t=getTasks();t.splice(i,1);saveTasks(t);show('tasks
 // ============================================================
 // PEOPLE
 // ============================================================
+let editingPerson=-1;
 function renderPeople(ct){
 const people=getPeople();
 
 ct.innerHTML=`
 <div class="panel">
-<h2>People</h2>
+<h2><i class="fi fi-rr-users" style="margin-right:8px"></i>People</h2>
+<div style="margin-bottom:16px">
+<button class="btn" onclick="showAddPerson()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Person</button>
+</div>
+<div id="person-form" style="display:none;margin-bottom:16px">
+<div class="card" style="padding:16px">
+<h3 style="margin-bottom:12px" id="person-form-title"><i class="fi fi-rr-user-plus" style="margin-right:4px"></i> Add Person</h3>
+<div class="grid grid-2" style="margin-bottom:8px">
+<div>
+<label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Name *</label>
+<input type="text" id="p-name" placeholder="Full name" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:8px;outline:none">
+</div>
+<div>
+<label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Role / Title</label>
+<input type="text" id="p-role" placeholder="Friend, Colleague, Client..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:8px;outline:none">
+</div>
+</div>
+<div style="margin-bottom:8px">
+<label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Contact (email, phone, social)</label>
+<input type="text" id="p-contact" placeholder="email@example.com" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:8px;outline:none">
+</div>
 <div style="margin-bottom:12px">
-<button class="btn" onclick="addPerson()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Person</button>
+<label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Notes</label>
+<textarea id="p-notes" placeholder="How you met, things to remember..." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:8px;outline:none;min-height:60px;resize:vertical;font-family:var(--font)"></textarea>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn" onclick="savePerson()"><i class="fi fi-rr-check" style="margin-right:4px"></i> Save</button>
+<button class="btn-ghost btn-sm" onclick="cancelPerson()">Cancel</button>
+</div>
+</div>
 </div>
 <div class="grid grid-3">
 ${people.map((p,i)=>`
 <div class="person-card" onclick="editPerson(${i})">
+<div style="display:flex;justify-content:space-between;align-items:start">
 <div class="avatar">${(p.name||'?')[0].toUpperCase()}</div>
+<button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px" onclick="event.stopPropagation();deletePerson(${i})"><i class="fi fi-rr-trash"></i></button>
+</div>
 <div class="name">${esc(p.name)}</div>
 <div class="role">${esc(p.role||'')}</div>
+${p.contact?`<div style="font-size:10px;color:var(--accent);margin-top:2px"><i class="fi fi-rr-envelope" style="margin-right:2px"></i>${esc(p.contact)}</div>`:''}
 ${p.notes?`<div style="font-size:11px;color:var(--text3);margin-top:4px">${esc(p.notes.slice(0,80))}</div>`:''}
 </div>
 `).join('')}
-${people.length===0?'<p style="color:var(--text3);font-size:13px">No people yet. Add one.</p>':''}
+${people.length===0?'<p style="color:var(--text3);font-size:13px;grid-column:1/-1">No people yet. Click Add Person to start your CRM.</p>':''}
 </div>
 </div>`;
 }
 
-function addPerson(){
-const name=prompt('Person name:');
-if(!name)return;
-const people=getPeople();
-people.push({name,role:'',notes:'',contact:'',created:today()});
-savePeople(people);
-show('people');
+function showAddPerson(){
+editingPerson=-1;
+document.getElementById('person-form').style.display='block';
+document.getElementById('person-form-title').innerHTML='<i class="fi fi-rr-user-plus" style="margin-right:4px"></i> Add Person';
+document.getElementById('p-name').value='';
+document.getElementById('p-role').value='';
+document.getElementById('p-contact').value='';
+document.getElementById('p-notes').value='';
+document.getElementById('p-name').focus();
 }
 
 function editPerson(i){
 const people=getPeople();
 const p=people[i];
-const name=prompt('Name:',p.name);
-if(name!==null)p.name=name;
-const role=prompt('Role:',p.role);
-if(role!==null)p.role=role;
-const notes=prompt('Notes:',p.notes);
-if(notes!==null)p.notes=notes;
+editingPerson=i;
+document.getElementById('person-form').style.display='block';
+document.getElementById('person-form-title').innerHTML='<i class="fi fi-rr-user-pen" style="margin-right:4px"></i> Edit Person';
+document.getElementById('p-name').value=p.name||'';
+document.getElementById('p-role').value=p.role||'';
+document.getElementById('p-contact').value=p.contact||'';
+document.getElementById('p-notes').value=p.notes||'';
+document.getElementById('p-name').focus();
+}
+
+function savePerson(){
+const name=document.getElementById('p-name').value.trim();
+if(!name){alert('Name is required');return;}
+const role=document.getElementById('p-role').value.trim();
+const contact=document.getElementById('p-contact').value.trim();
+const notes=document.getElementById('p-notes').value.trim();
+const people=getPeople();
+if(editingPerson>=0){
+people[editingPerson]={...people[editingPerson],name,role,contact,notes};
+}else{
+people.push({name,role,contact,notes,created:today()});
+}
+savePeople(people);
+editingPerson=-1;
+show('people');
+}
+
+function cancelPerson(){
+editingPerson=-1;
+document.getElementById('person-form').style.display='none';
+}
+
+function deletePerson(i){
+if(!confirm('Delete this person?'))return;
+const people=getPeople();
+people.splice(i,1);
 savePeople(people);
 show('people');
 }
@@ -972,9 +1045,9 @@ const labels={articles:'Articles',newsletters:'Newsletters','youtube-scripts':'Y
 
 ct.innerHTML=`
 <div class="panel">
-<h2>Writing</h2>
+<h2><i class="fi fi-rr-pen-fancy" style="margin-right:8px"></i>Writing</h2>
 <div class="tabs">
-${types.map(t=>`<div class="tab" onclick="showWritingType('${t}')">${labels[t]}</div>`).join('')}
+${types.map(t=>`<div class="tab" onclick="showWritingType('${t}')"><i class="fi fi-rr-${t==='articles'?'newspaper':t==='newsletters'?'envelope':'video'}" style="margin-right:4px"></i>${labels[t]}</div>`).join('')}
 </div>
 <div id="writing-content"></div>
 </div>`;
@@ -1049,19 +1122,23 @@ const books=STORE.get('books',[]);
 
 ct.innerHTML=`
 <div class="panel">
-<h2>Library</h2>
+<h2><i class="fi fi-rr-book-open" style="margin-right:8px"></i>Library</h2>
 <div style="margin-bottom:12px">
 <button class="btn" onclick="addBook()"><i class="fi fi-rr-plus" style="margin-right:4px"></i> Add Book</button>
 </div>
 <div class="grid grid-3">
 ${books.map((b,i)=>`
 <div class="card" style="cursor:pointer" onclick="editBook(${i})">
-<h3>${esc(b.title)}</h3>
-<div style="font-size:11px;color:var(--text3)">${esc(b.author||'')}</div>
+<div style="display:flex;justify-content:space-between;align-items:start">
+<div><i class="fi fi-rr-book" style="font-size:20px;color:var(--accent);margin-bottom:4px;display:block"></i></div>
+<button style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px" onclick="event.stopPropagation();deleteBook(${i})"><i class="fi fi-rr-trash"></i></button>
+</div>
+<h3 style="margin-top:0">${esc(b.title)}</h3>
+<div style="font-size:11px;color:var(--text3)"><i class="fi fi-rr-user" style="margin-right:2px"></i>${esc(b.author||'Unknown')}</div>
 ${b.notes?`<div style="font-size:12px;color:var(--text2);margin-top:4px">${esc(b.notes.slice(0,100))}</div>`:''}
 </div>
 `).join('')}
-${books.length===0?'<p style="color:var(--text3);font-size:13px">No books yet. Add one.</p>':''}
+${books.length===0?'<p style="color:var(--text3);font-size:13px;grid-column:1/-1"><i class="fi fi-rr-inbox" style="margin-right:4px"></i>No books yet. Add one.</p>':''}
 </div>
 </div>`;
 }
@@ -1071,6 +1148,14 @@ const title=prompt('Book title:');
 if(!title)return;
 const books=STORE.get('books',[]);
 books.push({title,author:'',notes:'',created:today()});
+STORE.set('books',books);
+show('library');
+}
+
+function deleteBook(i){
+if(!confirm('Delete this book?'))return;
+const books=STORE.get('books',[]);
+books.splice(i,1);
 STORE.set('books',books);
 show('library');
 }
@@ -1282,20 +1367,20 @@ ct.innerHTML=`
 <div class="panel">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
 <button class="btn-ghost btn-sm" onclick="show('dashboard')"><i class="fi fi-rr-arrow-left"></i> Back</button>
-<h2 style="margin:0">${sub?sub[0].toUpperCase()+sub.slice(1):'Knowledge Base'}</h2>
+<h2 style="margin:0"><i class="fi fi-rr-book-open-reader" style="margin-right:8px"></i>${sub?sub[0].toUpperCase()+sub.slice(1):'Knowledge Base'}</h2>
 </div>
 <div class="grid grid-3" style="margin-bottom:16px">
 <div class="memento" onclick="show('wiki','sources')" style="cursor:pointer">
 <div class="big" style="font-size:24px">${sourceCount}</div>
-<div class="sub">Sources</div>
+<div class="sub"><i class="fi fi-rr-document" style="margin-right:2px"></i>Sources</div>
 </div>
 <div class="memento" onclick="show('wiki','entities')" style="cursor:pointer">
 <div class="big" style="font-size:24px">${entityCount}</div>
-<div class="sub">Entities</div>
+<div class="sub"><i class="fi fi-rr-user" style="margin-right:2px"></i>Entities</div>
 </div>
 <div class="memento" onclick="show('wiki','concepts')" style="cursor:pointer">
 <div class="big" style="font-size:24px">${conceptCount}</div>
-<div class="sub">Concepts</div>
+<div class="sub"><i class="fi fi-rr-bulb" style="margin-right:2px"></i>Concepts</div>
 </div>
 </div>
 <div class="grid grid-2">
