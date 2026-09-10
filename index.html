@@ -236,13 +236,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 </div>
 <nav class="nav">
 <div class="nav-label">Dashboard</div>
-<div class="ni a" id="n-dashboard" onclick="show('dashboard')"><i class="fi fi-rr-dashboard"></i> Compass</div>
+<div class="ni a" id="n-dashboard" onclick="show('dashboard')"><i class="fi fi-rr-compass"></i> Compass</div>
 <div class="ni" id="n-journal" onclick="show('journal')"><i class="fi fi-rr-notebook"></i> Journal</div>
 <div class="ni" id="n-retreat" onclick="show('retreat')"><i class="fi fi-rr-mountain"></i> Retreat</div>
 <div class="nav-label">Plan</div>
 <div class="ni" id="n-planning" onclick="show('planning')"><i class="fi fi-rr-bullseye"></i> Planning</div>
 <div class="ni" id="n-projects" onclick="show('projects')"><i class="fi fi-rr-kanban"></i> Projects</div>
 <div class="ni" id="n-tasks" onclick="show('tasks')"><i class="fi fi-rr-checkbox"></i> Tasks</div>
+<div class="nav-label">Knowledge</div>
+<div class="ni" id="n-wiki" onclick="show('wiki')"><i class="fi fi-rr-book-open-reader"></i> Wiki</div>
+<div class="ni" id="n-sources" onclick="show('wiki','sources')"><i class="fi fi-rr-document"></i> Sources</div>
+<div class="ni" id="n-entities" onclick="show('wiki','entities')"><i class="fi fi-rr-user"></i> Entities</div>
+<div class="ni" id="n-concepts" onclick="show('wiki','concepts')"><i class="fi fi-rr-bulb"></i> Concepts</div>
 <div class="nav-label">People & Content</div>
 <div class="ni" id="n-people" onclick="show('people')"><i class="fi fi-rr-users"></i> People</div>
 <div class="ni" id="n-writing" onclick="show('writing')"><i class="fi fi-rr-pen"></i> Writing</div>
@@ -266,6 +271,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font)}
 </div>
 
 <script>
+// ============================================================
+// GITHUB DATA
+// ============================================================
+const GH='Gongwasubash/ai';
+const API='https://api.github.com/repos/'+GH+'/contents';
+const RAW='https://raw.githubusercontent.com/'+GH+'/main';
+const ghCache={};
+async function ghDir(path){if(ghCache[path])return ghCache[path];try{const r=await fetch(API+'/'+path,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)return[];const d=await r.json();ghCache[path]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));return ghCache[path];}catch(e){return[];}}
+async function ghFile(path){const k='f:'+path;if(ghCache[k])return ghCache[k];try{const u=RAW+'/'+path.split('/').map(encodeURIComponent).join('/');const r=await fetch(u);if(r.ok){ghCache[k]=await r.text();return ghCache[k];}}catch(e){}return'';}
+
 // ============================================================
 // DATA LAYER
 // ============================================================
@@ -335,6 +350,7 @@ else if(view==='writing')renderWriting(ct);
 else if(view==='library')renderLibrary(ct);
 else if(view==='chat')renderChat(ct);
 else if(view==='graph')renderGraph(ct);
+else if(view==='wiki'){window._wikiSub=sub;renderWiki(ct,sub);}
 }
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
@@ -1158,6 +1174,20 @@ parts.push(`=== QUARTERLY RETREAT (${qk}) ===\nWheel: ${JSON.stringify(retreat.w
 const people=getPeople();
 if(people.length)parts.push(`=== PEOPLE ===\n${people.map(p=>`${p.name} (${p.role||''}): ${p.notes||''}`).join('\n')}`);
 
+// Wiki data from GitHub
+try{
+const sources=await ghDir('wiki/sources');
+const entities=await ghDir('wiki/entities');
+const concepts=await ghDir('wiki/concepts');
+parts.push(`=== KNOWLEDGE BASE ===\nSources: ${sources.map(s=>s.name).join(', ')}\nEntities: ${entities.map(e=>e.name).join(', ')}\nConcepts: ${concepts.map(c=>c.name).join(', ')}`);
+
+// Load a few source summaries for context
+for(const s of sources.slice(0,3)){
+const c=await ghFile('wiki/sources/'+s.name+'.md');
+if(c)parts.push(`=== ${s.name} ===\n${c.slice(0,1500)}`);
+}
+}catch(e){}
+
 return parts.join('\n\n');
 }
 
@@ -1227,6 +1257,73 @@ ctx.fillStyle='#8899b8';
 ctx.font='10px Inter,system-ui,sans-serif';
 ctx.fillText(n.label,n.x+n.r+4,n.y+3);
 });
+}
+
+// ============================================================
+// WIKI (GitHub data)
+// ============================================================
+let wikiSub='';
+async function renderWiki(ct,sub){
+wikiSub=sub||'';
+ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+const cats=sub?[sub]:['sources','entities','concepts','analyses'];
+const all=[];
+for(const cat of cats){
+const files=await ghDir('wiki/'+cat);
+files.forEach(f=>{f.cat=cat;all.push(f);});
+}
+// Stats
+const sourceCount=all.filter(f=>f.cat==='sources').length;
+const entityCount=all.filter(f=>f.cat==='entities').length;
+const conceptCount=all.filter(f=>f.cat==='concepts').length;
+ct.innerHTML=`
+<div class="panel">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+<button class="btn-ghost btn-sm" onclick="show('dashboard')"><i class="fi fi-rr-arrow-left"></i> Back</button>
+<h2 style="margin:0">${sub?sub[0].toUpperCase()+sub.slice(1):'Knowledge Base'}</h2>
+</div>
+<div class="grid grid-3" style="margin-bottom:16px">
+<div class="memento" onclick="show('wiki','sources')" style="cursor:pointer">
+<div class="big" style="font-size:24px">${sourceCount}</div>
+<div class="sub">Sources</div>
+</div>
+<div class="memento" onclick="show('wiki','entities')" style="cursor:pointer">
+<div class="big" style="font-size:24px">${entityCount}</div>
+<div class="sub">Entities</div>
+</div>
+<div class="memento" onclick="show('wiki','concepts')" style="cursor:pointer">
+<div class="big" style="font-size:24px">${conceptCount}</div>
+<div class="sub">Concepts</div>
+</div>
+</div>
+<div class="grid grid-2">
+${all.map(f=>`
+<div class="card" style="cursor:pointer" onclick="openWikiDoc('${f.cat}','${f.name}')">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+<i class="fi fi-rr-${f.cat==='sources'?'document':f.cat==='entities'?'user':'bulb'}" style="font-size:14px;color:var(--accent)"></i>
+<h3 style="margin:0">${esc(f.name.replace(/[-_]/g,' '))}</h3>
+</div>
+<div class="meta" style="font-size:10px;color:var(--text3)">${f.cat}</div>
+</div>
+`).join('')}
+${all.length===0?'<p style="color:var(--text3)">No wiki pages found.</p>':''}
+</div>
+</div>`;
+}
+
+async function openWikiDoc(cat,name){
+ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+const content=await ghFile(cat+'/'+name+'.md');
+const ct2=document.getElementById('ct');
+ct2.innerHTML=`
+<div class="panel" style="max-width:700px">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<button class="btn-ghost btn-sm" onclick="show('wiki','${cat}')"><i class="fi fi-rr-arrow-left"></i> Back</button>
+<h2 style="margin:0;font-size:16px">${esc(name.replace(/[-_]/g,' '))}</h2>
+</div>
+<div style="font-size:11px;color:var(--text3);margin-bottom:8px">${cat}</div>
+<div style="line-height:1.8;font-size:13px;white-space:pre-wrap">${esc(content.slice(0,15000))}</div>
+</div>`;
 }
 
 // ============================================================
