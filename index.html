@@ -279,7 +279,7 @@ const API='https://api.github.com/repos/'+GH+'/contents';
 const RAW='https://raw.githubusercontent.com/'+GH+'/main';
 const ghCache={};
 async function ghDir(path){if(ghCache[path])return ghCache[path];try{const r=await fetch(API+'/'+path,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)return[];const d=await r.json();ghCache[path]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));return ghCache[path];}catch(e){return[];}}
-async function ghFile(path){const k='f:'+path;if(ghCache[k])return ghCache[k];try{const u=RAW+'/'+path.split('/').map(encodeURIComponent).join('/');const r=await fetch(u);if(r.ok){ghCache[k]=await r.text();return ghCache[k];}}catch(e){}return'';}
+async function ghFile(path){const k='f:'+path;if(ghCache[k])return ghCache[k];try{const r=await fetch(API+'/'+path,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)return'';const d=await r.json();if(d.content){ghCache[k]=decodeURIComponent(escape(atob(d.content)));return ghCache[k];}}catch(e){}return'';}
 
 // ============================================================
 // DATA LAYER
@@ -615,13 +615,14 @@ ct.innerHTML=`
 <h2 style="margin:0">${months[month]} ${year}</h2>
 <button class="btn-ghost btn-sm" onclick="journalNav(1)"><i class="fi fi-rr-arrow-right"></i></button>
 </div>
+<p style="color:var(--text3);font-size:12px;margin-bottom:12px">Click any day to write. Rate questions 1-10 (effort), check habits, write journal/wins/gratitude.</p>
 <div class="grid grid-2">
 <div class="card">
 <div class="cal-grid">${calHtml}</div>
 </div>
 <div>
 <div class="journal-entry">
-<div class="date">${journalDate} · ${dayOfWeek(journalDate)}</div>
+<div class="date" style="font-size:13px;font-weight:600;color:var(--accent)">${journalDate} · ${dayOfWeek(journalDate)}</div>
 <div class="journal-section">
 <h4>Daily Questions (1-10 effort)</h4>
 <div class="q-grid">
