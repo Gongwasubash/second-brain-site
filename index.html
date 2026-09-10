@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Second Brain AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0f1a;--bg2:#0f1525;--bg3:#141c2e;--bg4:#1a2540;
+--border:#1e2d4a;--border2:#2a3a5c;
+--text:#e8edf5;--text2:#8899b8;--text3:#5a6a88;
+--accent:#4d7cfe;--accent2:#6b95ff;--accent3:#3a5fd4;
+--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
+--font:'Inter',system-ui,sans-serif;
+--sidebar-w:220px;
+}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font)}
+.app{display:flex;height:100vh}
+
+/* Sidebar */
+.sb{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;transition:transform .3s;z-index:100}
+.sb-h{padding:16px;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.nav{flex:1;padding:8px;overflow-y:auto}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);padding:12px 12px 6px;font-weight:600}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s}
+.ni:hover{background:var(--bg3);color:var(--text)}
+.ni.a{background:var(--accent);color:#fff}
+.ni i{font-size:16px;width:20px;text-align:center}
+.ni .bdg{margin-left:auto;background:var(--bg4);padding:2px 7px;border-radius:10px;font-size:10px}
+.ni.a .bdg{background:rgba(255,255,255,.2)}
+.user-card{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.user-avatar{width:32px;height:32px;background:var(--accent3);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.user-name{font-size:13px;font-weight:500}
+.user-plan{font-size:11px;color:var(--text2)}
+
+/* Main */
+.mn{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);min-width:0}
+.hd{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.sb-wrap{flex:1;max-width:500px;position:relative}
+.sb-wrap input{width:100%;padding:9px 14px 9px 36px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s}
+.sb-wrap input:focus{border-color:var(--accent)}
+.sb-wrap i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px}
+.ct{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+
+/* Welcome */
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px}
+.welcome h1{font-size:28px;font-weight:600;margin-bottom:8px;text-align:center}
+.welcome h1 span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.welcome p{color:var(--text2);text-align:center;max-width:450px;line-height:1.6;margin-bottom:28px;font-size:14px}
+.quick-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:500px}
+.qa{padding:8px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s}
+.qa:hover{border-color:var(--accent);color:var(--accent);background:var(--bg3)}
+
+/* Messages */
+.msg{display:flex;gap:10px;padding:12px 16px;max-width:800px;margin:0 auto;width:100%}
+.msg.user{justify-content:flex-end}
+.msg.user .bb{background:var(--accent);color:#fff;border-radius:16px 16px 4px 16px}
+.msg.ai .bb{background:transparent;border-radius:16px 16px 16px 4px}
+.msg .bb{padding:12px 16px;font-size:13px;line-height:1.7;max-width:75%;white-space:pre-wrap;word-wrap:break-word}
+.msg .av{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.msg.ai .av{background:var(--accent3);color:#fff}
+.msg.user .av{background:var(--bg4);color:var(--text)}
+
+/* Typing */
+.typing{display:flex;gap:4px;padding:6px 10px}
+.typing span{width:5px;height:5px;background:var(--text3);border-radius:50%;animation:bounce 1.4s infinite ease-in-out}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* Input */
+.chat-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.msgs{flex:1;overflow-y:auto;min-height:0}
+.input-area{padding:12px 16px 20px;background:var(--bg);border-top:1px solid var(--border);flex-shrink:0}
+.input-wrap{max-width:800px;margin:0 auto;display:flex;gap:8px;align-items:flex-end}
+.input-wrap textarea{flex:1;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;font-family:var(--font);outline:none;resize:none;min-height:42px;max-height:120px;line-height:1.5;transition:border-color .15s}
+.input-wrap textarea:focus{border-color:var(--accent)}
+.send-btn{width:42px;height:42px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.send-btn:hover{background:var(--accent2)}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
+.tools{display:flex;gap:6px;margin-top:6px}
+.tool-btn{padding:3px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:5px;font-size:10px;color:var(--text3);cursor:pointer;transition:all .15s}
+.tool-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Dashboard */
+.panel{padding:20px;max-width:800px;margin:0 auto;width:100%}
+.panel h2{font-size:18px;font-weight:600;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.stat .num{font-size:24px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .label{font-size:10px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all .15s}
+.card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.card h3{font-size:13px;font-weight:500;margin-bottom:4px}
+.card p{font-size:11px;color:var(--text2);line-height:1.5}
+.card .meta{margin-top:8px;font-size:10px;color:var(--text3)}
+
+/* Graph */
+.graph-wrap{flex:1;display:flex;flex-direction:column;min-height:0;padding:16px;max-width:1000px;margin:0 auto;width:100%}
+.graph-bar{display:flex;gap:12px;align-items:center;margin-bottom:10px;font-size:12px;color:var(--text2);flex-wrap:wrap}
+.lgnd{display:flex;gap:10px;flex-wrap:wrap}
+.lgnd span{display:flex;align-items:center;gap:4px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+#gc{flex:1;min-height:420px;background:radial-gradient(ellipse at center,#14141c 0%,#0a0a0f 75%);border:1px solid var(--border);border-radius:10px;cursor:grab;touch-action:none}
+@media(max-width:768px){#gc{min-height:320px}.graph-wrap{padding:10px}}
+#ginfo{margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:12px;display:none}
+#ginfo.on{display:block}
+#ginfo .go{color:var(--accent);cursor:pointer;font-weight:600}
+
+/* Mobile */
+.menu-btn{display:none;position:fixed;top:10px;left:10px;z-index:101;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);cursor:pointer;font-size:16px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+@media(max-width:768px){
+.sb{position:fixed;left:0;top:0;height:100%;transform:translateX(-100%)}
+.sb.open{transform:translateX(0)}
+.overlay.show{display:block}
+.menu-btn{display:flex!important}
+.stats{grid-template-columns:repeat(2,1fr)}
+.pg{grid-template-columns:1fr}
+.welcome h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<button class="menu-btn" onclick="toggleSidebar()"><i class="fi fi-rr-menu-burger"></i></button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+<aside class="sb" id="sidebar">
+<div class="sb-h">
+<div class="logo">
+<div class="logo-icon"><i class="fi fi-rr-brain" style="color:#fff;font-size:16px"></i></div>
+<span>Second Brain</span>
+</div>
+</div>
+<nav class="nav">
+<div class="nav-label">Workspace</div>
+<div class="ni a" id="n-chat" onclick="show('chat')"><i class="fi fi-rr-comment"></i> AI Chat</div>
+<div class="ni" onclick="location.href='terminal.html'"><i class="fi fi-rr-terminal"></i> Terminal</div>
+<div class="ni" id="n-home" onclick="show('home')"><i class="fi fi-rr-dashboard"></i> Dashboard</div>
+<div class="nav-label">Knowledge</div>
+<div class="ni" onclick="show('wiki')"><i class="fi fi-rr-book-open-reader"></i> Wiki <span class="bdg" id="wc">-</span></div>
+<div class="ni" onclick="show('wiki','sources')"><i class="fi fi-rr-document"></i> Sources</div>
+<div class="ni" id="n-raw" onclick="show('raw')"><i class="fi fi-rr-archive"></i> Raw</div>
+<div class="ni" onclick="show('wiki','entities')"><i class="fi fi-rr-user"></i> Entities</div>
+<div class="ni" onclick="show('wiki','concepts')"><i class="fi fi-rr-bulb"></i> Concepts</div>
+<div class="ni" id="n-graph" onclick="show('graph')"><i class="fi fi-rr-diagram-project"></i> Graph</div>
+<div class="nav-label">Personal</div>
+<div class="ni" onclick="show('crm')"><i class="fi fi-rr-users"></i> Contacts</div>
+<div class="ni" onclick="show('journal')"><i class="fi fi-rr-notebook"></i> Journal</div>
+</nav>
+<div class="user-card">
+<div class="user-avatar"><i class="fi fi-rr-user" style="font-size:14px"></i></div>
+<div><div class="user-name">Subash</div><div class="user-plan">Free Plan</div></div>
+</div>
+</aside>
+<main class="mn">
+<div class="hd">
+<div class="sb-wrap"><i class="fi fi-rr-search"></i><input type="text" id="search" placeholder="Search..." onkeyup="if(event.key==='Enter')doSearch()"></div>
+</div>
+<div class="ct" id="ct"></div>
+</main>
+</div>
+<script>
+const GH='Gongwasubash/ai',API='https://api.github.com/repos/'+GH+'/contents',RAW='https://raw.githubusercontent.com/'+GH+'/main';
+let cache={},chatHist=[],busy=false;
+const ct=document.getElementById('ct');
+
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+async function gh(p){if(cache[p])return cache[p];try{const r=await fetch(API+'/'+p,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)throw 0;const d=await r.json();if(Array.isArray(d)){cache[p]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path,size:f.size}));}else{cache[p]=decodeURIComponent(escape(atob(d.content)));}return cache[p];}catch(e){return Array.isArray(p)||!p.includes('/')?[]:'';}}
+async function rf(p){const k='f:'+p;if(cache[k])return cache[k];try{const u=RAW+'/'+p.split('/').map(encodeURIComponent).join('/');const r=await fetch(u);if(r.ok){cache[k]=await r.text();return cache[k];}}catch(e){}return '';}
+async function lf(f){const k='l:'+f;if(cache[k])return cache[k];const d=await gh(f);if(d&&Array.isArray(d)){cache[k]=d;return d;}return [];}
+
+function show(v,s){closeSidebar();document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));document.getElementById('n-'+v)?.classList.add('a');ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+if(v==='home')renderHome();else if(v==='wiki')renderWiki(s);else if(v==='crm')renderCRM();else if(v==='journal')renderJournal();else if(v==='graph')renderGraph();else if(v==='raw')renderRaw();else renderChat();}
+
+async function renderHome(){const[s,e,c]=await Promise.all([lf('wiki/sources'),lf('wiki/entities'),lf('wiki/concepts')]);const t=(s?.length||0)+(e?.length||0)+(c?.length||0);
+ct.innerHTML=`<div class="panel"><h2>Dashboard</h2><div class="stats">
+<div class="stat"><div class="num">${t}</div><div class="label">Wiki Pages</div></div>
+<div class="stat"><div class="num">${s?.length||0}</div><div class="label">Sources</div></div>
+<div class="stat"><div class="num">${e?.length||0}</div><div class="label">Entities</div></div>
+<div class="stat"><div class="num">${c?.length||0}</div><div class="label">Concepts</div></div>
+</div><h3>Recent Sources</h3><div class="pg">${(s||[]).slice(0,6).map(f=>`<div class="card" onclick="openDoc('wiki/sources','${f.name}')"><h3>${f.name.replace(/-/g,' ')}</h3><div class="meta"><i class="fi fi-rr-document" style="margin-right:4px"></i>source</div></div>`).join('')}</div></div>`;}
+
+async function renderWiki(sub){const fs=sub?[sub]:['sources','entities','concepts','analyses'];const all=[];
+for(const f of fs){const files=await lf('wiki/'+f);(files||[]).forEach(file=>{file.cat=f;all.push(file);});}
+ct.innerHTML=`<div class="panel"><h2>${sub?sub[0].toUpperCase()+sub.slice(1):'All Wiki Pages'}</h2><div class="pg">${all.map(f=>`<div class="card" onclick="openDoc('wiki/${f.cat}','${f.name}')"><h3>${f.name.replace(/[-_]/g,' ')}</h3><div class="meta">${f.cat}</div></div>`).join('')||'<p style="color:var(--text3)">No pages found.</p>'}</div></div>`;}
+
+function fmtSize(b){if(b>1048576)return (b/1048576).toFixed(1)+' MB';return Math.max(1,Math.round(b/1024))+' KB';}
+async function renderRaw(){
+ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)">loading raw files…</div>';
+const all=[];let limited=false;
+for(const f of['raw','raw/processed']){
+try{const r=await fetch(API+'/'+f,{headers:{'Accept':'application/vnd.github.v3+json'}});
+if(r.status===403){limited=true;continue;}
+const d=await r.json();(d||[]).forEach(x=>{if(x.type==='file'&&x.name.endsWith('.md')){x.cat=f;all.push(x);}});}catch(e){}
+}
+all.sort((a,b)=>(b.size||0)-(a.size||0));
+ct.innerHTML=`<div class="panel"><h2>Raw Sources</h2><p style="color:var(--text3);font-size:12px;margin-bottom:12px">Original immutable source documents from GitHub (${all.length} files). Large takeout videos stay out of git by design.${limited?'<br>GitHub rate limit hit (60/hr) — some folders hidden. Wait a minute and reopen.':''}</p><div class="pg">${all.map(x=>`<div class="card" onclick="openRaw('${x.cat}','${x.name.replace(/'/g,"\\'")}')"><h3>${esc(x.name.replace(/\.md$/,''))}</h3><div class="meta">${esc(x.cat)} · ${fmtSize(x.size||0)}</div></div>`).join('')||'<p style="color:var(--text3)">No raw files found.</p>'}</div></div>`;}
+async function openRaw(cat,name){ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)">loading…</div>';
+const c=await rf(cat+'/'+name);const MAX=30000;
+ct.innerHTML=`<div class="panel" style="max-width:700px"><a style="color:var(--accent);font-size:12px;cursor:pointer" onclick="show('raw')"><i class="fi fi-rr-arrow-left" style="margin-right:4px"></i>Back</a><h2 style="font-size:16px;margin:12px 0 4px">${esc(name.replace(/\.md$/,''))}</h2><div style="color:var(--text3);font-size:11px;margin-bottom:8px">${esc(cat)}${c.length>MAX?' · showing first 30KB':''}</div><div style="margin-top:8px;line-height:1.8;font-size:13px;white-space:pre-wrap">${esc(c.slice(0,MAX))}</div></div>`;}
+
+function goback(c){const p=c.split('/');if(p[0]==='wiki')show('wiki',p[1]);else show(p[0]);}
+
+async function openDoc(cat,name){ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';const c=await rf(cat+'/'+name+'.md');
+ct.innerHTML=`<div class="panel" style="max-width:700px"><a style="color:var(--accent);font-size:12px;cursor:pointer" onclick="goback('${cat}')"><i class="fi fi-rr-arrow-left" style="margin-right:4px"></i>Back</a><div style="margin-top:12px;line-height:1.8;font-size:13px;white-space:pre-wrap">${c}</div></div>`;}
+
+async function renderCRM(){const f=await lf('crm');const e=(f||[]).filter(x=>x.name!=='index');
+ct.innerHTML=`<div class="panel"><h2>Contacts</h2><div class="pg">${e.map(x=>`<div class="card" onclick="openDoc('crm','${x.name}')"><h3>${x.name.replace(/[-_]/g,' ')}</h3></div>`).join('')||'<p style="color:var(--text3)">No contacts yet.</p>'}</div></div>`;}
+
+async function renderJournal(){const f=await lf('journal');const e=(f||[]).filter(x=>x.name!=='index');
+ct.innerHTML=`<div class="panel"><h2>Journal</h2><div class="pg">${e.map(x=>`<div class="card" onclick="openDoc('journal','${x.name}')"><h3>${x.name.replace(/[-_]/g,' ')}</h3></div>`).join('')||'<p style="color:var(--text3)">No entries yet.</p>'}</div></div>`;}
+
+const GCOL={'wiki/sources':'#4d7cfe','wiki/entities':'#22c55e','wiki/concepts':'#f59e0b','wiki/analyses':'#a78bfa','crm':'#f472b6','journal':'#4ec9b0'};
+function renderGraph(){
+ct.innerHTML=`<div class="graph-wrap"><h2 style="font-size:18px;font-weight:600;margin-bottom:8px">Graph <span style="font-size:11px;color:var(--text3);font-weight:400">v3 · obsidian</span></h2>
+<div class="graph-bar"><span id="gcount" style="color:var(--text3)">loading files…</span><span class="lgnd">${Object.entries(GCOL).map(([k,v])=>`<span><span class="dot" style="background:${v}"></span>${k.split('/').pop()}</span>`).join('')}</span></div>
+<canvas id="gc"></canvas><div id="ginfo"></div></div>`;
+buildGraph();}
+async function buildGraph(){
+const cv=document.getElementById('gc');if(!cv)return;
+const folders=Object.keys(GCOL),nodes=[],byNorm={};
+function norm(s){return (s||'').toLowerCase().replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();}
+for(const f of folders){const files=await lf(f);if(!cv.isConnected)return;
+for(const file of(files||[])){const n={id:file.path,name:file.name,folder:f,x:0,y:0,vx:0,vy:0,links:[]};nodes.push(n);const k=norm(file.name);(byNorm[k]=byNorm[k]||[]).push(n);}}
+const gc=document.getElementById('gcount');if(gc)gc.textContent=nodes.length+' files · linking…';
+const edges=[];
+for(const n of nodes){const c=await rf(n.path);if(!cv.isConnected)return;if(!c)continue;const seen={};
+for(const m of c.matchAll(/\[\[([^\]|#]+)/g)){const t=m[1].trim();if(!t||seen[t])continue;seen[t]=1;
+const tgt=(byNorm[norm(t)]||[]).find(x=>x.folder===n.folder)||(byNorm[norm(t)]||[])[0];
+if(tgt&&tgt!==n){edges.push([n,tgt]);n.links.push(tgt);tgt.links.push(n);}}}
+if(gc)gc.textContent=nodes.length+' files · '+edges.length+' links — scroll to zoom · drag background to pan · drag dots to move · click a dot to open';
+nodes.forEach((n,i)=>{const fi=folders.indexOf(n.folder),a=(fi/folders.length)*Math.PI*2+i*0.35;
+n.x=Math.cos(a)*200*(0.4+0.6*((i%5)/4))+(Math.random()-0.5)*60;n.y=Math.sin(a)*150+(Math.random()-0.5)*60;});
+runGraph(cv,nodes,edges);}
+function runGraph(cv,nodes,edges){
+const ctx=cv.getContext('2d');
+let drag=null,hover=null,sel=null,moved=0,panning=false;
+const view={x:0,y:0,k:1};
+function size(){const d=window.devicePixelRatio||1;cv.width=cv.clientWidth*d;cv.height=(cv.clientHeight||480)*d;ctx.setTransform(d,0,0,d,0,0);}
+size();window.addEventListener('resize',size);
+function pos(e){const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top];}
+function rad(n){return 3+Math.min(9,n.links.length);}
+function toWorld(x,y){const w=cv.clientWidth,h=cv.clientHeight||480;return[(x-w/2)/view.k+view.x,(y-h/2)/view.k+view.y];}
+function near(x,y){const p=toWorld(x,y);let best=null,bd=1e9;for(const n of nodes){const dx=n.x-p[0],dy=n.y-p[1],d=Math.sqrt(dx*dx+dy*dy);if(d<rad(n)/view.k+8&&d<bd){bd=d;best=n;}}return best;}
+function down(x,y){const n=near(x,y);moved=0;if(n){drag=n;panning=false;cv.style.cursor='grabbing';}else{panning=true;drag=null;cv.style.cursor='move';}dragX=x;dragY=y;}
+let dragX=0,dragY=0;
+function move(x,y){if(drag){const p=toWorld(x,y);drag.x=p[0];drag.y=p[1];drag.vx=drag.vy=0;moved++;}
+else if(panning){view.x-=(x-dragX)/view.k;view.y-=(y-dragY)/view.k;dragX=x;dragY=y;moved++;}
+else{hover=near(x,y);cv.style.cursor=hover?'pointer':'grab';}}
+function up(){if(drag&&moved<4)select(drag);drag=null;panning=false;cv.style.cursor='grab';}
+cv.onmousedown=e=>{const p=pos(e);down(p[0],p[1]);};
+cv.onmousemove=e=>{const p=pos(e);move(p[0],p[1]);};
+cv.onmouseup=()=>up();cv.onmouseleave=()=>{drag=null;panning=false;hover=null;};
+cv.ontouchstart=e=>{const t=e.touches[0],p=pos(t);down(p[0],p[1]);e.preventDefault();};
+cv.ontouchmove=e=>{const t=e.touches[0],p=pos(t);move(p[0],p[1]);e.preventDefault();};
+cv.ontouchend=()=>up();
+cv.onwheel=e=>{e.preventDefault();const p=pos(e),before=toWorld(p[0],p[1]);
+view.k=Math.min(3,Math.max(0.3,view.k*(e.deltaY<0?1.12:0.89)));
+const w=cv.clientWidth,h=cv.clientHeight||480;
+view.x=before[0]-(p[0]-w/2)/view.k;view.y=before[1]-(p[1]-h/2)/view.k;};
+cv.ondblclick=()=>{view.x=view.y=0;view.k=1;};
+function select(n){sel=n;window._gsel=n;const gi=document.getElementById('ginfo');if(!gi)return;gi.classList.add('on');
+const linked=n.links.slice(0,15).map(t=>{const i=nodes.indexOf(t);return `<span class="go" style="margin-right:8px" onclick="gjump(${i})">◦ ${esc(t.name)}</span>`;}).join('');
+gi.innerHTML=`<div style="font-weight:600;font-size:13px">${esc(n.name)}</div><div style="color:var(--text3);margin:2px 0 6px">${esc(n.folder)} · ${n.links.length} links</div><span class="go" onclick="openDoc(window._gsel.folder,window._gsel.name)">Open file →</span>${linked?`<div style="margin-top:8px;color:var(--text3)">Connected to:<br>${linked}</div>`:''}`;}
+window._gnodes=nodes;
+window.gjump=function(i){const n=(window._gnodes||[])[i];if(!n)return;view.x=n.x;view.y=n.y;if(view.k<1)view.k=1;select(n);};
+function tick(){
+if(!cv.isConnected)return;
+const w=cv.clientWidth,h=cv.clientHeight||480;
+for(let i=0;i<nodes.length;i++){const a=nodes[i];
+for(let j=i+1;j<nodes.length;j++){const b=nodes[j];let dx=a.x-b.x,dy=a.y-b.y;const d2=dx*dx+dy*dy||1,d=Math.sqrt(d2),f=Math.min(9000/d2,2);dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;}
+a.vx+=(0-a.x)*0.008;a.vy+=(0-a.y)*0.008;a.vx*=0.85;a.vy*=0.85;}
+for(const e of edges){const a=e[0],b=e[1],dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-110)*0.02,ux=dx/d,uy=dy/d;a.vx+=ux*f;a.vy+=uy*f;b.vx-=ux*f;b.vy-=uy*f;}
+for(const n of nodes){if(n!==drag){n.x+=n.vx;n.y+=n.vy;}}
+const sx=n=>(n.x-view.x)*view.k+w/2, sy=n=>(n.y-view.y)*view.k+h/2;
+ctx.clearRect(0,0,w,h);
+ctx.lineWidth=1;
+const conn=sel?new Set([sel,...sel.links]):null;
+for(const e of edges){const hot=e[0]===sel||e[1]===sel||e[0]===hover||e[1]===hover;
+ctx.strokeStyle=hot?'rgba(168,130,255,.95)':(sel?'rgba(148,163,255,.07)':'rgba(148,163,255,.34)');
+ctx.lineWidth=hot?1.8:1.2;
+ctx.beginPath();ctx.moveTo(sx(e[0]),sy(e[0]));ctx.lineTo(sx(e[1]),sy(e[1]));ctx.stroke();}
+for(const n of nodes){const x=sx(n),y=sy(n),r=rad(n)*view.k,hot=n===sel||n===hover,col=GCOL[n.folder]||'#a882ff';
+const dimmed=conn&&!conn.has(n)&&!hot;
+ctx.save();ctx.shadowColor=col;ctx.shadowBlur=dimmed?0:(hot?24:10+Math.min(14,n.links.length*2));ctx.fillStyle=col;ctx.globalAlpha=dimmed?.15:(hot?1:.95);
+ctx.beginPath();ctx.arc(x,y,Math.max(2,r),0,7);ctx.fill();ctx.restore();
+if(n===sel){ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(x,y,Math.max(2,r)+3,0,7);ctx.stroke();}
+const isNb=sel&&sel.links.includes(n);
+if(hot||n===sel||isNb){ctx.fillStyle=hot||n===sel?'#fff':'#9aa0b4';ctx.font='10px Inter,system-ui,sans-serif';ctx.fillText(n.name,x+r+5,y+3.5);}}
+requestAnimationFrame(tick);}
+requestAnimationFrame(tick);}
+
+function renderChat(){ct.innerHTML=`
+<div class="chat-wrap"><div class="msgs" id="msgs">
+<div class="welcome" id="welcome">
+<h1>What do you <span>want to know</span>?</h1>
+<p>I have access to your entire second brain — wiki, contacts, journal, and sources.</p>
+<div class="quick-actions">
+<div class="qa" onclick="qa('What are my interests?')">My interests</div>
+<div class="qa" onclick="qa('Summarize my recent journal')">Journal</div>
+<div class="qa" onclick="qa('Who are my contacts?')">Contacts</div>
+<div class="qa" onclick="qa('What AI tools have I researched?')">AI tools</div>
+<div class="qa" onclick="qa('What is the Mahispal dynasty?')">Mahispal</div>
+<div class="qa" onclick="qa('What systems have I built?')">Systems</div>
+</div></div>
+<div class="input-area"><div class="input-wrap">
+<textarea id="cin" placeholder="Ask anything..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+<button class="send-btn" id="sbn" onclick="send()"><i class="fi fi-rr-paper-plane"></i></button>
+</div><div class="tools">
+<div class="tool-btn" onclick="qa('run python: print(sum(range(100)))')"><i class="fi fi-rr-code-simple" style="margin-right:3px"></i>Python</div>
+<div class="tool-btn" onclick="qa('search my knowledge base for AI')"><i class="fi fi-rr-search" style="margin-right:3px"></i>Search</div>
+</div></div></div>`;}
+
+function qa(q){document.getElementById('cin').value=q;send();}
+
+async function send(){if(busy)return;const m=document.getElementById('cin').value.trim();if(!m)return;
+const box=document.getElementById('msgs');if(!box)return;
+const w=document.getElementById('welcome');if(w)w.remove();
+box.insertAdjacentHTML('beforeend',`<div class="msg user"><div class="av"><i class="fi fi-rr-user" style="font-size:12px"></i></div><div class="bb">${esc(m)}</div></div>`);
+box.insertAdjacentHTML('beforeend',`<div class="msg ai" id="typing"><div class="av">🧠</div><div class="bb"><div class="typing"><span></span><span></span><span></span></div></div></div>`);
+box.scrollTop=box.scrollHeight;
+document.getElementById('cin').value='';document.getElementById('cin').style.height='auto';
+busy=true;document.getElementById('sbn').disabled=true;
+chatHist.push({role:'user',content:m});
+try{const ctx=await fetchCtx(m);
+const r=await fetch('/.netlify/functions/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m,history:chatHist.slice(-6),context:ctx})});
+const d=await r.json();document.getElementById('typing')?.remove();
+box.insertAdjacentHTML('beforeend',`<div class="msg ai"><div class="av">🧠</div><div class="bb">${renderMd(d.response||'No reply — the free models are busy. Wait a few seconds and ask again.')}</div></div>`);
+chatHist.push({role:'assistant',content:d.response||''});}catch(e){document.getElementById('typing')?.remove();
+box.insertAdjacentHTML('beforeend',`<div class="msg ai"><div class="av">🧠</div><div class="bb" style="color:var(--red)">Error: ${e.message}</div></div>`);}
+busy=false;document.getElementById('sbn').disabled=false;box.scrollTop=box.scrollHeight;}
+
+async function fetchCtx(q){const ql=q.toLowerCase();const kw=ql.split(/\s+/).filter(w=>w.length>2);const parts=[];
+async function addIdx(p,n){const c=await rf(p);if(c)parts.push(`=== ${p} ===\n${c.slice(0,n||3000)}`);}
+if(/journal|diary|today|recent|wrote/.test(ql))await addIdx('journal/index.md');
+if(/contact|crm|who|people|friend|know/.test(ql))await addIdx('crm/index.md');
+if(/log|changelog|activity|did/.test(ql)){const c=await rf('wiki/log.md');if(c)parts.push('=== wiki/log.md ===\n'+c.slice(-3000));}
+await addIdx('wiki/index.md',4000);
+const scored=[];
+for(const folder of ['wiki/sources','wiki/entities','wiki/concepts','wiki/analyses','crm','journal']){
+const files=await lf(folder);if(!files?.length)continue;
+for(const f of files.slice(0,15)){const c=await rf(f.path);if(!c)continue;
+const s=kw.reduce((a,k)=>a+(c.toLowerCase().split(k).length-1),0);
+if(s>0)scored.push({s,path:f.path,c:c.slice(0,2000)});}}
+scored.sort((a,b)=>b.s-a.s);
+for(const r of scored.slice(0,7))parts.push(`=== ${r.path} ===\n${r.c}`);
+return parts.join('\n\n')||'No relevant data found.';}
+
+async function doSearch(){const q=document.getElementById('search').value.trim();if(!q)return;
+ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i></div>';
+const kw=q.toLowerCase().split(/\s+/).filter(w=>w.length>2);const results=[];
+for(const folder of ['wiki/sources','wiki/entities','wiki/concepts','wiki/analyses','crm','journal']){
+const files=await lf(folder);if(!files?.length)continue;
+for(const f of files){const c=await rf(f.path);if(!c)continue;
+const score=kw.reduce((s,k)=>s+(c.toLowerCase().split(k).length-1),0);
+if(score>0)results.push({name:f.name,path:f.path,score,preview:c.slice(0,200).replace(/\n/g,' ')});}}
+results.sort((a,b)=>b.score-a.score);
+ct.innerHTML=`<div class="panel"><h2>Results for "${esc(q)}"</h2><div class="pg">${results.slice(0,20).map(r=>`<div class="card" onclick="openDoc('${r.path.split('/').slice(0,-1).join('/')}','${r.name}')"><h3>${r.name.replace(/[-_]/g,' ')}</h3><p>${esc(r.preview.slice(0,120))}</p></div>`).join('')||'<p style="color:var(--text3)">No results.</p>'}</div></div>`;}
+
+function renderMd(t){if(!t)return'';return t.replace(/```(\w*)\n([\s\S]*?)```/g,'<pre style="background:var(--bg3);padding:10px;border-radius:6px;overflow-x:auto;font-size:11px"><code>$2</code></pre>').replace(/`([^`]+)`/g,'<code style="background:var(--bg3);padding:2px 5px;border-radius:3px;font-size:11px">$1</code>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');}
+function esc(t){const d=document.createElement('div');d.textContent=t||'';return d.innerHTML;}
+
+async function init(){const[s,e,c]=await Promise.all([lf('wiki/sources'),lf('wiki/entities'),lf('wiki/concepts')]);
+document.getElementById('wc').textContent=(s?.length||0)+(e?.length||0)+(c?.length||0);show('chat');}
+init();
+</script>
+<style>@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}</style>
+</body>
+</html>

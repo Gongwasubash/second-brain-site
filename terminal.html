@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal — Second Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#1e1e1e;--bg2:#252526;--bg3:#2d2d2d;--border:#3e3e42;--green:#4ec9b0;--prompt:#569cd6;--path:#4ec9b0;--text:#cccccc;--dim:#858585;--yellow:#dcdcaa;--red:#f48771}
+html,body{height:100%}
+body{background:#111;font-family:'JetBrains Mono',monospace;color:var(--text);display:flex;flex-direction:column;height:100vh}
+/* VS Code titlebar */
+.tb{background:#3c3c3c;display:flex;align-items:center;padding:0 12px;height:38px;flex-shrink:0;gap:12px}
+.tb .dots{display:flex;gap:8px}
+.tb .dots span{width:12px;height:12px;border-radius:50%}
+.tb .dots .r{background:#ff5f57}.tb .dots .y{background:#febc2e}.tb .dots .g{background:#28c840}
+.tb .title{flex:1;text-align:center;font-size:12px;color:#ccc}
+.tb a{color:#ccc;font-size:12px;text-decoration:none;display:flex;align-items:center;gap:5px}
+.tb a:hover{color:#fff}
+/* status bar */
+.sb2{background:#007acc;color:#fff;font-size:11px;padding:4px 12px;display:flex;gap:14px;flex-shrink:0;align-items:center}
+.sb2 .right{margin-left:auto}
+/* terminal body */
+#term{flex:1;overflow-y:auto;background:var(--bg);padding:14px 16px;font-size:13.5px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+#term::-webkit-scrollbar{width:10px}
+#term::-webkit-scrollbar-thumb{background:#424242}
+.ln{margin:1px 0}
+.p-input{color:var(--green);font-weight:700}
+.p-path{color:var(--path)}
+.p-arrow{color:var(--green);font-weight:700}
+.cmd{color:#fff}
+.out{color:var(--text)}
+.out .warn{color:var(--yellow)}
+.err{color:var(--red)}
+.dim{color:var(--dim)}
+.model-tag{color:var(--prompt)}
+/* input row */
+#row{display:flex;align-items:center;gap:8px}
+#in{flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:inherit;font-size:13.5px;caret-color:var(--green)}
+.typing::after{content:'▋';color:var(--green);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(max-width:600px){#term{font-size:12px;padding:10px}.tb .title{display:none}}
+</style>
+</head>
+<body>
+<div class="tb">
+<div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+<div class="title">subash@second-brain: ~/terminal — zsh</div>
+<a href="index.html"><i class="fi fi-rr-arrow-left"></i> app</a>
+</div>
+<div id="term"></div>
+<div class="sb2"><span id="st-model">model: auto (free)</span><span class="right">UTF-8 · zsh · OpenCode Zen</span></div>
+<script>
+const GH='Gongwasubash/ai',API='https://api.github.com/repos/'+GH+'/contents',RAW='https://raw.githubusercontent.com/'+GH+'/main';
+const term=document.getElementById('term');
+let cache={},hist=[],hIdx=-1,chatHist=[],busy=false,activeModel=null;
+
+function print(html,cls){const d=document.createElement('div');d.className='ln '+(cls||'');d.innerHTML=html;term.appendChild(d);term.scrollTop=term.scrollHeight;return d;}
+function promptRow(){print(`<div id="row"><span class="p-arrow">➜</span> <span class="p-path">~</span> <input id="in" autocomplete="off" spellcheck="false" aria-label="terminal input"></div>`);const i=document.getElementById('in');i.focus();i.addEventListener('keydown',onKey);}
+function esc(t){const d=document.createElement('div');d.textContent=t||'';return d.innerHTML;}
+function onKey(e){
+  const i=e.target;
+  if(e.key==='Enter'){const v=i.value;i.removeEventListener('keydown',onKey);i.id='';i.setAttribute('readonly','');run(v.trim());}
+  else if(e.key==='ArrowUp'){e.preventDefault();if(hist.length){hIdx=Math.max(0,hIdx<0?hist.length-1:hIdx-1);i.value=hist[hIdx]||'';}}
+  else if(e.key==='ArrowDown'){e.preventDefault();if(hist.length){hIdx++;i.value=hIdx>=hist.length?(hIdx=hist.length,''):hist[hIdx];}}
+  else if(e.key==='l'&&e.ctrlKey){e.preventDefault();term.innerHTML='';promptRow();}
+}
+term.addEventListener('click',()=>{const i=document.getElementById('in');if(i)i.focus();});
+
+async function run(cmd){
+  if(cmd)hist.push(cmd);hIdx=-1;
+  if(!cmd){promptRow();return;}
+  const[base,...rest]=cmd.split(/\s+/);const arg=rest.join(' ');
+  if(base==='clear'){term.innerHTML='';promptRow();return;}
+  if(base==='help'){print(`<span class="dim">ask:\n  &lt;question&gt;   ask the AI (free model auto-selected)\n  ask &lt;question&gt; same as above\nwrite (saves to GitHub second brain):\n  /journal &lt;text&gt;        append to today's journal\n  /contact &lt;Name&gt; | &lt;details&gt;  create/update contact\n  /append &lt;path&gt; &lt;text&gt;  append to any file\n  /read &lt;path&gt;            show a file\n  /log &lt;text&gt;             add entry to wiki/log.md\ninfo:\n  model  show active model\n  models list free models\n  clear  clear screen</span>`);promptRow();return;}
+  if(base==='model'){print(`active model: <span class="model-tag">${esc(activeModel||'auto (free)')}</span>`);promptRow();return;}
+  if(base==='models'){
+    print('<span class="dim">fetching free models…</span>');
+    try{const r=await fetch('/.netlify/functions/terminal',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'models'})});const d=await r.json();print('free models:\n<span class="model-tag">'+esc((d.models||[]).join('\n'))+'</span>');}
+    catch(e){print('<span class="err">Error: '+esc(e.message)+'</span>');}
+    promptRow();return;
+  }
+  if(base.startsWith('/')){
+    const act=base.slice(1);
+    if(['journal','contact','append','read','log'].includes(act)){await execWrite(act,arg);return;}
+    print(`<span class="err">unknown command: ${esc(base)} (try help)</span>`);promptRow();return;
+  }
+  const q=base==='ask'?(arg||'') :cmd;
+  if(!q){promptRow();return;}
+  await ask(q);
+}
+async function execWrite(action,arg){
+  if(busy){print('<span class="err">busy — wait for current reply</span>');promptRow();return;}
+  busy=true;const t=print('<span class="dim typing">saving…</span>');
+  try{
+    let args={};
+    if(action==='journal')args={text:arg};
+    else if(action==='log')args={text:arg};
+    else if(action==='read')args={path:arg};
+    else if(action==='contact'){const[name,...ds]=arg.split('|');args={name:(name||'').trim(),details:ds.join('|')}; }
+    else if(action==='append'){const sp=arg.indexOf(' ');args={path:sp<0?arg:arg.slice(0,sp),text:sp<0?'':arg.slice(sp+1)};}
+    const r=await fetch('/.netlify/functions/terminal',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,args})});
+    const d=await r.json();t.remove();
+    if((d.response||'').startsWith('Error'))print('<span class="err">'+esc(d.response)+'</span>');
+    else print('<span class="out">✓ '+esc(d.response)+'</span>');
+  }catch(e){t.remove();print('<span class="err">Error: '+esc(e.message)+'</span>');}
+  busy=false;promptRow();
+}
+async function ask(q){
+  if(busy){print('<span class="err">busy — wait for current reply</span>');promptRow();return;}
+  busy=true;chatHist.push({role:'user',content:q});
+  const t=print('<span class="dim typing">thinking…</span>');
+  try{
+    const ctx=await fetchCtx(q);
+    const r=await fetch('/.netlify/functions/terminal',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,history:chatHist.slice(-6),context:ctx})});
+    const d=await r.json();t.remove();
+    if(d.model){activeModel=d.model;document.getElementById('st-model').textContent='model: '+d.model;}
+    // typewriter output
+    const resp=d.response||'No reply — free models busy. Wait a few seconds and retry.';
+    const line=print('');let k=0;
+    const timer=setInterval(()=>{k+=2;line.innerHTML='<span class="out">'+esc(resp.slice(0,k))+'</span>';term.scrollTop=term.scrollHeight;if(k>=resp.length){clearInterval(timer);busy=false;promptRow();}},12);
+    chatHist.push({role:'assistant',content:resp});
+  }catch(e){t.remove();print('<span class="err">Error: '+esc(e.message)+'</span>');busy=false;promptRow();}
+}
+// --- RAG context from GitHub (same as main app) ---
+async function gh(p){if(cache[p])return cache[p];try{const r=await fetch(API+'/'+p,{headers:{'Accept':'application/vnd.github.v3+json'}});if(!r.ok)throw 0;const d=await r.json();if(Array.isArray(d)){cache[p]=d.filter(f=>f.name.endsWith('.md')).map(f=>({name:f.name.replace('.md',''),path:f.path}));}else{cache[p]=decodeURIComponent(escape(atob(d.content)));}return cache[p];}catch(e){return p.includes('/')?'':[];}}
+async function rf(p){const k='f:'+p;if(cache[k])return cache[k];try{const u=RAW+'/'+p.split('/').map(encodeURIComponent).join('/');const r=await fetch(u);if(r.ok){cache[k]=await r.text();return cache[k];}}catch(e){}return '';}
+async function lf(f){const k='l:'+f;if(cache[k])return cache[k];const d=await gh(f);if(d&&Array.isArray(d)){cache[k]=d;return d;}return [];}
+async function fetchCtx(q){const ql=q.toLowerCase();const kw=ql.split(/\s+/).filter(w=>w.length>2);const parts=[];
+async function addIdx(p,n){const c=await rf(p);if(c)parts.push(`=== ${p} ===\n${c.slice(0,n||3000)}`);}
+if(/journal|diary|today|recent|wrote/.test(ql))await addIdx('journal/index.md');
+if(/contact|crm|who|people|friend|know/.test(ql))await addIdx('crm/index.md');
+if(/log|changelog|activity|did/.test(ql)){const c=await rf('wiki/log.md');if(c)parts.push('=== wiki/log.md ===\n'+c.slice(-3000));}
+await addIdx('wiki/index.md',4000);
+const scored=[];
+for(const folder of['wiki/sources','wiki/entities','wiki/concepts','wiki/analyses','crm','journal']){const files=await lf(folder);if(!files?.length)continue;
+for(const f of files.slice(0,15)){const c=await rf(f.path);if(!c)continue;const s=kw.reduce((a,k)=>a+(c.toLowerCase().split(k).length-1),0);if(s>0)scored.push({s,path:f.path,c:c.slice(0,2000)});}}
+scored.sort((a,b)=>b.s-a.s);
+for(const r of scored.slice(0,7))parts.push(`=== ${r.path} ===\n${r.c}`);
+return parts.join('\n\n')||'No relevant data found.';}
+
+print('<span class="dim">Second Brain Terminal v1.0 — OpenCode Zen (free models)\nType <span class="cmd">help</span> for commands. Your key stays on the server, never in the browser.</span>');
+promptRow();
+</script>
+</body>
+</html>
