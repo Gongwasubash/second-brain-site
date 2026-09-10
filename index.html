@@ -306,20 +306,37 @@ return count;
 }
 
 async function syncPeople(){
-const files=await ghDir('crm');
 let count=0;
-for(const f of files){
+const people=getPeople();
+
+// Sync from crm/ folder
+const crmFiles=await ghDir('crm');
+for(const f of crmFiles){
 if(f.name==='index')continue;
 const content=await ghFile('crm/'+f.name+'.md');
 if(!content)continue;
 const name=f.name.replace(/[-_]/g,' ');
-const people=getPeople();
 if(people.find(p=>p.name.toLowerCase()===name.toLowerCase()))continue;
 const body=content.replace(/^---[\s\S]*?---\n*/,'').trim();
-people.push({name,role:'',contact:'',notes:body.slice(0,500),created:today()});
-savePeople(people);
+people.push({name,role:'Contact',contact:'',notes:body.slice(0,500),created:today()});
 count++;
 }
+
+// Sync from wiki/entities/ folder (people)
+const entityFiles=await ghDir('wiki/entities');
+for(const f of entityFiles){
+const content=await ghFile('wiki/entities/'+f.name+'.md');
+if(!content)continue;
+const name=f.name.replace(/[-_]/g,' ');
+if(people.find(p=>p.name.toLowerCase()===name.toLowerCase()))continue;
+const isPerson=!['n8n','obsidian','hermes-agent','openrouter','chatgpt-codex','google-flow','metricool','antigravity','case-studio','coder-army','fish-audio','growthschool','klever-nuts-ai','mahispal-dynasty','metics-media','obsidian-web-clipper','nous-research'].some(k=>f.name.toLowerCase().includes(k));
+if(!isPerson)continue;
+const body=content.replace(/^---[\s\S]*?---\n*/,'').trim();
+people.push({name,role:'Entity',contact:'',notes:body.slice(0,500),created:today()});
+count++;
+}
+
+savePeople(people);
 return count;
 }
 
