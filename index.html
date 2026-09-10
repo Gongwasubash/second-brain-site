@@ -1316,7 +1316,9 @@ ${all.length===0?'<p style="color:var(--text3)">No wiki pages found.</p>':''}
 async function openWikiDoc(cat,name){
 const ct=document.getElementById('ct');
 ct.innerHTML='<div style="text-align:center;padding:60px;color:var(--text3)"><i class="fi fi-rr-spinner" style="font-size:24px;animation:spin 1s linear infinite"></i> Loading '+esc(name)+'...</div>';
-const content=await ghFile(cat+'/'+name+'.md');
+const path='wiki/'+cat+'/'+name+'.md';
+console.log('openWikiDoc path:',path);
+const content=await ghFile(path);
 if(!content){
 ct.innerHTML=`
 <div class="panel" style="max-width:700px">
